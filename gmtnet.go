@@ -2,6 +2,7 @@ package gmtnet
 
 import (
 	"context"
+	"fmt"
 	"net"
 
 	"github.com/gomystery/gmtnet/base"
@@ -17,48 +18,31 @@ type GmtNet struct {
 
 	Ctx context.Context
 
-	GmtNetImpl base.IGmtNet
+	GmtNetPlugin *gnet.GnetGmtNetPlugin
 
 	Config *base.NetConfig
 
 }
 
 
-func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler base.IGmtNet) base.IGmtNet {
+func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler base.IGmtNet) *GmtNet {
 	gmtnet := &GmtNet{
 		Ctx:     ctx,
 		handler: handler,
 	}
 
-	// todo new GmtNetImpl
+	// todo new GmtNetPlugin
 	switch netName {
 	case "Gnet":
-		gmtnet.GmtNetImpl = gnet.NewGnetGmtNetImpl(ctx,config,gmtnet)
+		gmtnet.GmtNetPlugin = gnet.NewGnetGmtNetPlugin(ctx,config,handler)
+		err := gmtnet.GmtNetPlugin.Run()
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 
 	return gmtnet
 }
-
-func (g GmtNet) OnStart(conn net.Conn) error {
-	return g.handler.OnStart(conn)
-}
-
-func (g GmtNet) OnConnect( conn net.Conn) error {
-	return g.handler.OnConnect(conn)
-}
-
-func (g GmtNet) OnReceive(conn net.Conn, bytes []byte) error {
-	return g.handler.OnReceive(conn,bytes)
-}
-
-func (g GmtNet) OnShutdown(conn net.Conn) error {
-	return g.handler.OnShutdown(conn)
-}
-
-func (g GmtNet) OnClose(conn net.Conn, err error) error {
-	return g.handler.OnClose(conn,err)
-}
-
 
 
 
