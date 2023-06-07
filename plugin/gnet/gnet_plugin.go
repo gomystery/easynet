@@ -3,6 +3,7 @@ package gnet
 import (
 	"context"
 	"github.com/gomystery/gmtnet/base"
+	"github.com/gomystery/gmtnet/interface"
 	"github.com/panjf2000/gnet/v2"
 	"net"
 )
@@ -16,11 +17,11 @@ type GnetGmtNetPlugin struct {
 
 	GnetServer *GnetServer
 
-	Handler base.IGmtNet
+	Handler _interface.IGmtNet
 }
 
 
-func NewGnetGmtNetPlugin(ctx context.Context,config *base.NetConfig, handler base.IGmtNet) *GnetGmtNetPlugin {
+func NewGnetGmtNetPlugin(ctx context.Context,config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
 	gnetGmtNetPlugin := &GnetGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

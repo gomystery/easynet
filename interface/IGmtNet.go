@@ -1,4 +1,4 @@
-package base
+package _interface
 
 import "net"
 

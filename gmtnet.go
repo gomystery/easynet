@@ -6,26 +6,27 @@ import (
 	"net"
 
 	"github.com/gomystery/gmtnet/base"
+	"github.com/gomystery/gmtnet/interface"
 	"github.com/gomystery/gmtnet/plugin/gnet"
 )
 
 
 type GmtNet struct {
 
-	handler base.IGmtNet
+	handler _interface.IGmtNet
 
 	Conn net.Conn
 
 	Ctx context.Context
 
-	GmtNetPlugin *gnet.GnetGmtNetPlugin
+	GmtNetPlugin _interface.IPlugin
 
 	Config *base.NetConfig
 
 }
 
 
-func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler base.IGmtNet) *GmtNet {
+func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler _interface.IGmtNet) *GmtNet {
 	gmtnet := &GmtNet{
 		Ctx:     ctx,
 		handler: handler,
