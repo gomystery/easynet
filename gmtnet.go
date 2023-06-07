@@ -10,9 +10,7 @@ import (
 	"github.com/gomystery/gmtnet/plugin/gnet"
 )
 
-
 type GmtNet struct {
-
 	handler _interface.IGmtNet
 
 	Conn net.Conn
@@ -22,11 +20,9 @@ type GmtNet struct {
 	GmtNetPlugin _interface.IPlugin
 
 	Config *base.NetConfig
-
 }
 
-
-func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler _interface.IGmtNet) *GmtNet {
+func NewGmtNet(ctx context.Context, netName string, config *base.NetConfig, handler _interface.IGmtNet) *GmtNet {
 	gmtnet := &GmtNet{
 		Ctx:     ctx,
 		handler: handler,
@@ -35,7 +31,7 @@ func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler
 	// todo new GmtNetPlugin
 	switch netName {
 	case "Gnet":
-		gmtnet.GmtNetPlugin = gnet.NewGnetGmtNetPlugin(ctx,config,handler)
+		gmtnet.GmtNetPlugin = gnet.NewGnetGmtNetPlugin(ctx, config, handler)
 		err := gmtnet.GmtNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
@@ -44,7 +40,3 @@ func NewGmtNet(ctx context.Context,netName string,config *base.NetConfig,handler
 
 	return gmtnet
 }
-
-
-
-

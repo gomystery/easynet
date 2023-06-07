@@ -9,7 +9,6 @@ import (
 )
 
 type Handler struct {
-
 }
 
 func (h Handler) OnStart(conn net.Conn) error {
@@ -37,8 +36,8 @@ func (h Handler) OnClose(conn net.Conn, err error) error {
 }
 
 func TestGnet(t *testing.T) {
-	config := base.NewNetConfig("tcp","127.0.0.1",9009)
+	config := base.NewNetConfig("tcp", "127.0.0.1", 9009)
 	handler := &Handler{}
-	gmet := NewGmtNet(context.Background(),"Gnet",config,handler)
+	gmet := NewGmtNet(context.Background(), "Gnet", config, handler)
 	fmt.Println(gmet)
 }

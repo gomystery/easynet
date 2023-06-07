@@ -20,15 +20,14 @@ type GnetGmtNetPlugin struct {
 	Handler _interface.IGmtNet
 }
 
-
-func NewGnetGmtNetPlugin(ctx context.Context,config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
+func NewGnetGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
 	gnetGmtNetPlugin := &GnetGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
-	gnetServer := NewGnetServer(ctx,config, handler)
+	gnetServer := NewGnetServer(ctx, config, handler)
 	gnetGmtNetPlugin.GnetServer = gnetServer
 
 	return gnetGmtNetPlugin
