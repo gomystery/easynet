@@ -2,12 +2,9 @@ package net
 
 import (
 	"context"
-	"net"
-	"time"
-
 	"github.com/gomystery/gmtnet/base"
 	"github.com/gomystery/gmtnet/interface"
-
+	"net"
 )
 
 type NetGmtNetPlugin struct {
@@ -22,7 +19,7 @@ type NetGmtNetPlugin struct {
 	Handler _interface.IGmtNet
 }
 
-func NewNetGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
+func NewNetGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *NetGmtNetPlugin {
 	GmtNetPlugin := &NetGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

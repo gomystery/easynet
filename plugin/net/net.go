@@ -31,7 +31,7 @@ func NewNetPollServer(ctx context.Context, config *base.NetConfig, handler _inte
 }
  
 func (s *NetServer) Run() error {
-	ln, err := net.Listen("tcp", ":8080")
+	ln, err := net.Listen(s.Network, s.Address)
 	if err != nil {
 		return err
 	}

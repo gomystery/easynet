@@ -22,7 +22,7 @@ type GevGmtNetPlugin struct {
 	Handler _interface.IGmtNet
 }
 
-func NewGevGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
+func NewGevGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GevGmtNetPlugin {
 	GmtNetPlugin := &GevGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

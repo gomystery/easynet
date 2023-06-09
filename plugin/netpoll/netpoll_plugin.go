@@ -19,7 +19,7 @@ type NetPollGmtNetPlugin struct {
 	Handler _interface.IGmtNet
 }
 
-func NewNetPollGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
+func NewNetPollGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *NetPollGmtNetPlugin {
 	GmtNetPlugin := &NetPollGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
