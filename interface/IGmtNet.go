@@ -1,17 +1,15 @@
 package _interface
 
-import "net"
-
 type IGmtNet interface {
-	OnStart(conn net.Conn) error
+	OnStart(conn interface{}) error
 
-	OnConnect(conn net.Conn) error
+	OnConnect(conn interface{}) error
 
-	OnReceive(conn net.Conn, bytes []byte) error
+	OnReceive(conn interface{}, bytes []byte) error
 
-	OnShutdown(conn net.Conn) error
+	OnShutdown(conn interface{}) error
 
-	OnClose(conn net.Conn, err error) error
+	OnClose(conn interface{}, err error) error
 
 	// todo to add more
 }
