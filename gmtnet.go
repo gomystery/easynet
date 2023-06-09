@@ -57,8 +57,9 @@ func NewGmtNet(ctx context.Context, netName string, config *base.NetConfig, hand
 		if err != nil {
 			fmt.Println(err)
 		}
+	default:
+		fmt.Println("no expected net plugin")
 	}
-
 
 	return gmtnet
 }
