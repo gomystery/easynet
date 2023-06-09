@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-type GnetGmtNetPlugin struct {
+type GevGmtNetPlugin struct {
 	Conn net.Conn
 
 	Ctx context.Context
@@ -23,7 +23,7 @@ type GnetGmtNetPlugin struct {
 }
 
 func NewGevGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
-	GmtNetPlugin := &GnetGmtNetPlugin{
+	GmtNetPlugin := &GevGmtNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
@@ -35,7 +35,7 @@ func NewGevGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _in
 	return GmtNetPlugin
 }
 
-func (g GnetGmtNetPlugin) Run() error {
+func (g GevGmtNetPlugin) Run() error {
 	s, err := gev.NewServer(g.Server,
 		gev.Network(g.Config.Protocol),
 		gev.Address(":"+ (strconv.Itoa( int(g.Config.Port)))  ),

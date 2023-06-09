@@ -4,41 +4,18 @@ import (
 	"context"
 	"fmt"
 	"github.com/Allenxuxu/gev"
-	"github.com/Allenxuxu/toolkit/sync/atomic"
 	"log"
 
 	"github.com/gomystery/gmtnet/base"
 	"github.com/gomystery/gmtnet/interface"
-	"github.com/panjf2000/gnet/v2"
 
 	//"github.com/Allenxuxu/gev/log"
 	//"time"
 )
 
-type example struct {
-	Count atomic.Int64
-}
-
-func (s *example) OnConnect(c *gev.Connection) {
-	s.Count.Add(1)
-	//log.Println(" OnConnect ： ", c.PeerAddr())
-}
-func (s *example) OnMessage(c *gev.Connection, ctx interface{}, data []byte) (out interface{}) {
-	//log.Println("OnMessage")
-	out = data
-	return
-}
-
-func (s *example) OnClose(c *gev.Connection) {
-	s.Count.Add(-1)
-	//log.Println("OnClose")
-}
 
 type GevServer struct {
 	Ctx context.Context
-	gnet.BuiltinEventEngine
-
-	eng       gnet.Engine
 	addr      string
 	multicore bool
 

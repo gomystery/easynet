@@ -5,7 +5,7 @@ type IGmtNet interface {
 
 	OnConnect(conn interface{}) error
 
-	OnReceive(conn interface{}, bytes []byte) error
+	OnReceive(conn interface{}, bytes []byte) ([]byte,error)
 
 	OnShutdown(conn interface{}) error
 

@@ -31,6 +31,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/plugin/net/net.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/plugin/net/net_plugin.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/plugin/netpoll/netpoll.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
       </map>
     </option>
   </component>

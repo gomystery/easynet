@@ -4,35 +4,32 @@ import (
 	"context"
 	"fmt"
 	"github.com/gomystery/gmtnet/base"
-	"net"
 	"testing"
 )
 
 type Handler struct {
 }
 
-func (h Handler) OnStart(conn net.Conn) error {
+func (h Handler) OnStart(conn interface{}) error {
 	return nil
 }
 
-func (h Handler) OnConnect(conn net.Conn) error {
-	return nil
-
-}
-
-func (h Handler) OnReceive(conn net.Conn, bytes []byte) error {
+func (h Handler) OnConnect(conn interface{}) error {
 	return nil
 
 }
 
-func (h Handler) OnShutdown(conn net.Conn) error {
-	return nil
+func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte,error) {
+	return nil,nil
 
 }
 
-func (h Handler) OnClose(conn net.Conn, err error) error {
+func (h Handler) OnShutdown(conn interface{}) error {
 	return nil
+}
 
+func (h Handler) OnClose(conn interface{}, err error) error {
+	return nil
 }
 
 func TestGnet(t *testing.T) {
