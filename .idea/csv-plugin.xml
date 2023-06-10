@@ -17,6 +17,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/plugin/evio/evio.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/plugin/evio/evio_plugin.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/plugin/gev/gnet_plugin.go">
           <value>
             <Attribute>

@@ -7,6 +7,7 @@ import (
 
 	"github.com/gomystery/gmtnet/base"
 	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/gmtnet/plugin/evio"
 	"github.com/gomystery/gmtnet/plugin/gev"
 	"github.com/gomystery/gmtnet/plugin/gnet"
 	np "github.com/gomystery/gmtnet/plugin/net"
@@ -53,6 +54,12 @@ func NewGmtNet(ctx context.Context, netName string, config *base.NetConfig, hand
 		}
 	case "NetPoll":
 		gmtnet.GmtNetPlugin = netpoll.NewNetPollGmtNetPlugin(ctx, config, handler)
+		err := gmtnet.GmtNetPlugin.Run()
+		if err != nil {
+			fmt.Println(err)
+		}
+	case "Evio":
+		gmtnet.GmtNetPlugin = evio.NewEvioGmtNetPlugin(ctx, config, handler)
 		err := gmtnet.GmtNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)

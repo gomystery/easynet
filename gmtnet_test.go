@@ -33,8 +33,8 @@ func (h Handler) OnClose(conn interface{}, err error) error {
 }
 
 func TestGnet(t *testing.T) {
-	config := base.NewNetConfig("tcp", "127.0.0.1", 9009)
+	config := base.NewNetConfig("tcp", "127.0.0.1", 9011)
 	handler := &Handler{}
-	gmet := NewGmtNet(context.Background(), "NetPoll", config, handler)
+	gmet := NewGmtNet(context.Background(), "Evio", config, handler)
 	fmt.Println(gmet)
 }
