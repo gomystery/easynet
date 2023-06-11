@@ -3,14 +3,12 @@ package gev
 import (
 	"context"
 	"fmt"
-	"github.com/Allenxuxu/gev"
 	"log"
 
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
+	"github.com/Allenxuxu/gev"
 
-	//"github.com/Allenxuxu/gev/log"
-	//"time"
 )
 
 
@@ -19,10 +17,10 @@ type GevServer struct {
 	addr      string
 	multicore bool
 
-	handler _interface.IGmtNet
+	handler _interface.IEasyNet
 }
 
-func NewGevServer(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GevServer {
+func NewGevServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GevServer {
 	return &GevServer{
 		Ctx:       ctx,
 		addr:      fmt.Sprintf("%s://%s:%d", config.GetProtocol(), config.GetIp(), config.GetPort()),

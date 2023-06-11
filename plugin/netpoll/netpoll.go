@@ -3,13 +3,12 @@ package netpoll
 import (
 	"context"
 	"fmt"
-	"github.com/cloudwego/netpoll"
 	"time"
 
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
-	//"github.com/Allenxuxu/gev/log"
-	//"time"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
+	"github.com/cloudwego/netpoll"
+
 )
 
 
@@ -20,10 +19,10 @@ type NetPollServer struct {
 	Address string
 	multicore bool
 
-	handler _interface.IGmtNet
+	handler _interface.IEasyNet
 }
 
-func NewNetPollServer(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *NetPollServer {
+func NewNetPollServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetPollServer {
 	return &NetPollServer{
 		Ctx:       ctx,
 		Network:   config.GetProtocol(),

@@ -1,4 +1,4 @@
-module github.com/gomystery/gmtnet
+module github.com/gomystery/easynet
 
 go 1.19
 

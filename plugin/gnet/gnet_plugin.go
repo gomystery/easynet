@@ -2,13 +2,13 @@ package gnet
 
 import (
 	"context"
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
 	"github.com/panjf2000/gnet/v2"
 	"net"
 )
 
-type GnetGmtNetPlugin struct {
+type GnetEasyNetPlugin struct {
 	Conn net.Conn
 
 	Ctx context.Context
@@ -17,23 +17,23 @@ type GnetGmtNetPlugin struct {
 
 	GnetServer *GnetServer
 
-	Handler _interface.IGmtNet
+	Handler _interface.IEasyNet
 }
 
-func NewGnetGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetGmtNetPlugin {
-	gnetGmtNetPlugin := &GnetGmtNetPlugin{
+func NewGnetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GnetEasyNetPlugin {
+	gnetEasyNetPlugin := &GnetEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
 	gnetServer := NewGnetServer(ctx, config, handler)
-	gnetGmtNetPlugin.GnetServer = gnetServer
+	gnetEasyNetPlugin.GnetServer = gnetServer
 
-	return gnetGmtNetPlugin
+	return gnetEasyNetPlugin
 }
 
-func (g GnetGmtNetPlugin) Run() error {
+func (g GnetEasyNetPlugin) Run() error {
 	err := gnet.Run(
 		g.GnetServer,
 		g.GnetServer.addr,

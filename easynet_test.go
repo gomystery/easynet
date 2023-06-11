@@ -1,9 +1,9 @@
-package gmtnet
+package easynet
 
 import (
 	"context"
 	"fmt"
-	"github.com/gomystery/gmtnet/base"
+	"github.com/gomystery/easynet/base"
 	"testing"
 )
 

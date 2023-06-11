@@ -2,12 +2,12 @@ package evio
 
 import (
 	"context"
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
 	"net"
 )
 
-type EvioGmtNetPlugin struct {
+type EvioEasyNetPlugin struct {
 	Conn net.Conn
 
 	Ctx context.Context
@@ -16,22 +16,22 @@ type EvioGmtNetPlugin struct {
 
 	server *EvioServer
 
-	Handler _interface.IGmtNet
+	Handler _interface.IEasyNet
 }
 
-func NewEvioGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *EvioGmtNetPlugin {
-	evioGmtNetPlugin := &EvioGmtNetPlugin{
+func NewEvioGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *EvioEasyNetPlugin {
+	evioEasyNetPlugin := &EvioEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
 	server := NewGnetServer(ctx, config, handler)
-	evioGmtNetPlugin.server = server
+	evioEasyNetPlugin.server = server
 
-	return evioGmtNetPlugin
+	return evioEasyNetPlugin
 }
 
-func (g EvioGmtNetPlugin) Run() error {
+func (g EvioEasyNetPlugin) Run() error {
 	return g.server.Run()
 }

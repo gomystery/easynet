@@ -1,6 +1,6 @@
 package _interface
 
-type IGmtNet interface {
+type IEasyNet interface {
 	OnStart(conn interface{}) error
 
 	OnConnect(conn interface{}) error

@@ -2,15 +2,16 @@ package gev
 
 import (
 	"context"
-	"github.com/Allenxuxu/gev"
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
 	"net"
 	"strconv"
 	"time"
+
+	"github.com/Allenxuxu/gev"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
 )
 
-type GevGmtNetPlugin struct {
+type GevEasyNetPlugin struct {
 	Conn net.Conn
 
 	Ctx context.Context
@@ -19,23 +20,23 @@ type GevGmtNetPlugin struct {
 
 	Server *GevServer
 
-	Handler _interface.IGmtNet
+	Handler _interface.IEasyNet
 }
 
-func NewGevGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GevGmtNetPlugin {
-	GmtNetPlugin := &GevGmtNetPlugin{
+func NewGevEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GevEasyNetPlugin {
+	easyNetPlugin := &GevEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
 	Server := NewGevServer(ctx, config, handler)
-	GmtNetPlugin.Server = Server
+	easyNetPlugin.Server = Server
 
-	return GmtNetPlugin
+	return easyNetPlugin
 }
 
-func (g GevGmtNetPlugin) Run() error {
+func (g GevEasyNetPlugin) Run() error {
 	s, err := gev.NewServer(g.Server,
 		gev.Network(g.Config.Protocol),
 		gev.Address(":"+ (strconv.Itoa( int(g.Config.Port)))  ),

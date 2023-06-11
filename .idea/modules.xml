@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/gmtnet.iml" filepath="$PROJECT_DIR$/.idea/gmtnet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/easynet.iml" filepath="$PROJECT_DIR$/.idea/easynet.iml" />
     </modules>
   </component>
 </project>

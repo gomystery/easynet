@@ -2,12 +2,12 @@ package net
 
 import (
 	"context"
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
 	"net"
 )
 
-type NetGmtNetPlugin struct {
+type NetEasyNetPlugin struct {
 	Conn net.Conn
 
 	Ctx context.Context
@@ -16,22 +16,22 @@ type NetGmtNetPlugin struct {
 
 	Server *NetServer
 
-	Handler _interface.IGmtNet
+	Handler _interface.IEasyNet
 }
 
-func NewNetGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *NetGmtNetPlugin {
-	GmtNetPlugin := &NetGmtNetPlugin{
+func NewNetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetEasyNetPlugin {
+	easyNetPlugin := &NetEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
 	Server := NewNetPollServer(ctx, config, handler)
-	GmtNetPlugin.Server = Server
+	easyNetPlugin.Server = Server
 
-	return GmtNetPlugin
+	return easyNetPlugin
 }
 
-func (g NetGmtNetPlugin) Run() error {
+func (g NetEasyNetPlugin) Run() error {
 	return g.Server.Run()
 }

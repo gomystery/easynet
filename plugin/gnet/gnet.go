@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/gomystery/gmtnet/base"
-	"github.com/gomystery/gmtnet/interface"
+	"github.com/gomystery/easynet/base"
+	"github.com/gomystery/easynet/interface"
 	"github.com/panjf2000/gnet/v2"
 	//"time"
 )
@@ -20,10 +20,10 @@ type GnetServer struct {
 	addr      string
 	multicore bool
 
-	handler _interface.IGmtNet
+	handler _interface.IEasyNet
 }
 
-func NewGnetServer(ctx context.Context, config *base.NetConfig, handler _interface.IGmtNet) *GnetServer {
+func NewGnetServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GnetServer {
 	return &GnetServer{
 		Ctx:       ctx,
 		addr:      fmt.Sprintf("%s://%s:%d", config.GetProtocol(), config.GetIp(), config.GetPort()),
