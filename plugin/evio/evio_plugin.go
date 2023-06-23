@@ -14,7 +14,7 @@ type EvioEasyNetPlugin struct {
 
 	Config *base.NetConfig
 
-	server *EvioServer
+	Server *EvioServer
 
 	Handler _interface.IEasyNet
 }
@@ -27,11 +27,11 @@ func NewEvioGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _i
 	}
 
 	server := NewGnetServer(ctx, config, handler)
-	evioEasyNetPlugin.server = server
+	evioEasyNetPlugin.Server = server
 
 	return evioEasyNetPlugin
 }
 
 func (g EvioEasyNetPlugin) Run() error {
-	return g.server.Run()
+	return g.Server.Run()
 }

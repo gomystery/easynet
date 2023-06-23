@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../pkg/mod/github.com/cloudwego/netpoll@v0.3.2/netpoll.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../pkg/mod/github.com/cloudwego/netpoll@v0.3.2/netpoll_server.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/easynet.go">
           <value>
             <Attribute>

@@ -19,8 +19,8 @@ func (h Handler) OnConnect(conn interface{}) error {
 
 }
 
-func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte,error) {
-	return nil,nil
+func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte, error) {
+	return nil, nil
 
 }
 

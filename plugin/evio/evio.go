@@ -6,8 +6,7 @@ import (
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/tidwall/evio"
-
-	//"time"
+	"log"
 )
 
 type EvioServer struct {
@@ -32,21 +31,25 @@ func (s EvioServer) Run() error {
 	var events evio.Events
 	events.NumLoops = 0
 	events.Serving = func(srv evio.Server) (action evio.Action) {
-		fmt.Println("evio",s.addr)
-		s.handler.OnStart(nil)
+		log.Printf("evio server OnConnect")
+		err := s.handler.OnConnect(nil)
+		if err != nil {
+			log.Printf("evio server OnConnect error %v", err)
+		}
 		return
 	}
 	events.Data = func(c evio.Conn, in []byte) (out []byte, action evio.Action) {
-		s.handler.OnReceive(c,in)
-
-		out = in
+		out, err := s.handler.OnReceive(c, in)
+		if err != nil {
+			log.Printf("evio server OnReceive err %v", err)
+		}
 		return
 	}
 
-	err:=evio.Serve(events, s.addr)
+	err := evio.Serve(events, s.addr)
 	if err != nil {
+		log.Printf("evio Serve error %v", err)
 		return err
 	}
-	//fmt.Println("evio",s.addr)
 	return nil
 }

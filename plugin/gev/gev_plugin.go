@@ -2,13 +2,11 @@ package gev
 
 import (
 	"context"
-	"net"
-	"strconv"
-	"time"
-
 	"github.com/Allenxuxu/gev"
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
+	"net"
+	"strconv"
 )
 
 type GevEasyNetPlugin struct {
@@ -39,16 +37,12 @@ func NewGevEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _i
 func (g GevEasyNetPlugin) Run() error {
 	s, err := gev.NewServer(g.Server,
 		gev.Network(g.Config.Protocol),
-		gev.Address(":"+ (strconv.Itoa( int(g.Config.Port)))  ),
+		gev.Address(":"+(strconv.Itoa(int(g.Config.Port)))),
 		gev.NumLoops(100),
 	)
 	if err != nil {
 		return err
 	}
-
-	s.RunEvery(time.Second*2, func() {
-
-	})
 
 	s.Start()
 	return nil
