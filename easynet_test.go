@@ -19,8 +19,8 @@ func (h Handler) OnConnect(conn interface{}) error {
 
 }
 
-func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte,error) {
-	return nil,nil
+func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte, error) {
+	return nil, nil
 
 }
 
@@ -35,6 +35,6 @@ func (h Handler) OnClose(conn interface{}, err error) error {
 func TestGnet(t *testing.T) {
 	config := base.NewNetConfig("tcp", "127.0.0.1", 9011)
 	handler := &Handler{}
-	gmet := NewGmtNet(context.Background(), "Evio", config, handler)
+	gmet := NewGmtNet(context.Background(), "NetPoll", config, handler)
 	fmt.Println(gmet)
 }

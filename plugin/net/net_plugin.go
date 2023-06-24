@@ -26,7 +26,7 @@ func NewNetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _i
 		Handler: handler,
 	}
 
-	Server := NewNetPollServer(ctx, config, handler)
+	Server := NewNetServer(ctx, config, handler)
 	easyNetPlugin.Server = Server
 
 	return easyNetPlugin

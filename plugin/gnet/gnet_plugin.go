@@ -15,7 +15,7 @@ type GnetEasyNetPlugin struct {
 
 	Config *base.NetConfig
 
-	GnetServer *GnetServer
+	Server *GnetServer
 
 	Handler _interface.IEasyNet
 }
@@ -28,15 +28,15 @@ func NewGnetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _
 	}
 
 	gnetServer := NewGnetServer(ctx, config, handler)
-	gnetEasyNetPlugin.GnetServer = gnetServer
+	gnetEasyNetPlugin.Server = gnetServer
 
 	return gnetEasyNetPlugin
 }
 
 func (g GnetEasyNetPlugin) Run() error {
 	err := gnet.Run(
-		g.GnetServer,
-		g.GnetServer.addr,
-		gnet.WithMulticore(g.GnetServer.multicore))
+		g.Server,
+		g.Server.addr,
+		gnet.WithMulticore(g.Server.multicore))
 	return err
 }

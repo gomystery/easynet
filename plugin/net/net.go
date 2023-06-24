@@ -8,34 +8,33 @@ import (
 	"net"
 )
 
-
 type NetServer struct {
 	Ctx context.Context
 
-	Network      string
-	Address string
+	Network   string
+	Address   string
 	multicore bool
 
 	handler _interface.IEasyNet
 }
 
-func NewNetPollServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetServer {
+func NewNetServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetServer {
 	return &NetServer{
 		Ctx:       ctx,
 		Network:   config.GetProtocol(),
-		Address:   fmt.Sprintf("%s:%d",config.GetIp(), config.GetPort()),
+		Address:   fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
 		multicore: false,
 		handler:   handler,
 	}
 
 }
- 
+
 func (s *NetServer) Run() error {
 	ln, err := net.Listen(s.Network, s.Address)
 	if err != nil {
 		return err
 	}
-	if err:= s.handler.OnStart(nil); err != nil {
+	if err := s.handler.OnStart(nil); err != nil {
 		return err
 	}
 
@@ -62,7 +61,7 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 	//4、获取客户端的网络地址信息
 	addr := conn.RemoteAddr().String()
 	fmt.Println(addr, "连接成功！！！")
-	rbuf,wbuf := []byte{},[]byte{}
+	rbuf, wbuf := []byte{}, []byte{}
 
 	//5、获取用户数据
 	for {
@@ -72,13 +71,11 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 			return
 		}
 
-		if wbuf,err = s.handler.OnReceive(conn,rbuf); err != nil {
+		if wbuf, err = s.handler.OnReceive(conn, rbuf); err != nil {
 			return
 		}
 
-
-
-		//6、把数据转换成大写，再给用户发送回去
+		//6、给用户发送回去
 		conn.Write(wbuf)
 	}
 }

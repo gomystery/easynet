@@ -3,35 +3,56 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="$PROJECT_DIR$/../easynet/easynet.go">
+        <entry key="$PROJECT_DIR$/../../pkg/mod/github.com/cloudwego/netpoll@v0.3.2/net_listener.go">
           <value>
             <Attribute>
               <option name="separator" value="&#9;" />
             </Attribute>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../easynet/easynet_test.go">
+        <entry key="$PROJECT_DIR$/../../pkg/mod/github.com/cloudwego/netpoll@v0.3.2/netpoll.go">
           <value>
             <Attribute>
               <option name="separator" value="&#9;" />
             </Attribute>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../easynet/interface/IGmtNet.go">
+        <entry key="$PROJECT_DIR$/../../pkg/mod/github.com/cloudwego/netpoll@v0.3.2/netpoll_server.go">
           <value>
             <Attribute>
               <option name="separator" value="&#9;" />
             </Attribute>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../easynet/plugin/gnet/gnet_plugin.go">
+        <entry key="$PROJECT_DIR$/easynet.go">
           <value>
             <Attribute>
               <option name="separator" value="&#9;" />
             </Attribute>
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../easynet/plugin/netpoll/netpoll_plugin.go">
+        <entry key="$PROJECT_DIR$/easynet_test.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/interface/IGmtNet.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/plugin/gnet/gnet_plugin.go">
+          <value>
+            <Attribute>
+              <option name="separator" value="&#9;" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/plugin/netpoll/netpoll_plugin.go">
           <value>
             <Attribute>
               <option name="separator" value="&#9;" />

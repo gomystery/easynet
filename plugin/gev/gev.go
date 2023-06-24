@@ -5,15 +5,13 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/Allenxuxu/gev"
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
-	"github.com/Allenxuxu/gev"
-
 )
 
-
 type GevServer struct {
-	Ctx context.Context
+	Ctx       context.Context
 	addr      string
 	multicore bool
 
@@ -30,19 +28,26 @@ func NewGevServer(ctx context.Context, config *base.NetConfig, handler _interfac
 }
 
 func (s *GevServer) OnConnect(c *gev.Connection) {
-	log.Printf("Gnet server with multi-core=%t is listening on %s\n", s.multicore, s.addr)
-	s.handler.OnConnect(c)
+	log.Printf("Gev server OnConnect \n")
+	err := s.handler.OnConnect(c)
+	if err != nil {
+		log.Printf("Gnet OnConnect err %v\n", err)
+	}
 	return
 }
-
 
 func (s *GevServer) OnMessage(c *gev.Connection, ctx interface{}, data []byte) (out interface{}) {
-	s.handler.OnReceive(c,data)
-	return
+	data, err := s.handler.OnReceive(c, data)
+	if err != nil {
+		log.Printf("Gnet OnMessage err %v\n", err)
+	}
+	return data
 }
 
-
 func (s *GevServer) OnClose(c *gev.Connection) {
-	s.handler.OnClose(c,nil)
+	err := s.handler.OnClose(c, nil)
+	if err != nil {
+		log.Printf("Gnet OnClose err %v\n", err)
+	}
 	return
 }
