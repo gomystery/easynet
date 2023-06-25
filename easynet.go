@@ -26,7 +26,7 @@ type EasyNet struct {
 	Config *base.NetConfig
 }
 
-func NewGmtNet(ctx context.Context, netName string, config *base.NetConfig, handler _interface.IEasyNet) *EasyNet {
+func NewEasyNet(ctx context.Context, netName string, config *base.NetConfig, handler _interface.IEasyNet) *EasyNet {
 	easynet := &EasyNet{
 		Ctx:     ctx,
 		handler: handler,
