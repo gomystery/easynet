@@ -1,16 +1,20 @@
-evio:
+evio_config:
   protocol: tcp
   ip: 127.0.0.1
   port:
-gev:
+gev_config:
   protocol: tcp
   ip: 127.0.0.1
   port: 80
-gnet:
+gnet_config:
   protocol: tcp
   ip: 127.0.0.1
   port: 80
-netpoll:
+net_config:
+  protocol: tcp
+  ip: 127.0.0.1
+  port: 80
+netpoll_config:
   protocol: tcp
   ip: 127.0.0.1
   port: 80

@@ -19,6 +19,16 @@ import (
 		"port":80
 	}
 */
+
+type YamlAllConfig struct {
+	EvioConfig *evio.YamlConfig `json:"evio_config" yaml:"evio_config"`
+	GevConfig *gev.YamlConfig `json:"gev_config" yaml:"gev_config"`
+	GnetConfig *gnet.YamlConfig `json:"gnet_config" yaml:"gnet_config"`
+	NetConfig *net.YamlConfig `json:"net_config" yaml:"net_config"`
+	NetpollConfig *netpoll.YamlConfig `json:"netpoll_config" yaml:"netpoll_config"`
+}
+
+
 type DeFaultNetConfig struct {
 	Protocol string `json:"protocol"`
 	Ip       string `json:"ip"`
@@ -39,11 +49,17 @@ func NewNetConfigWithConfig(path string,netName string) _interface.IConfig {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	//将配置文件读取到结构体中
+	yamlAllConfig := &YamlAllConfig{}
+	err = yaml.Unmarshal(yamlFile, yamlAllConfig)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	//var _config *config.Config
 	var config _interface.IConfig
 	switch netName {
 	case "Gnet":
-		config = &gnet.YamlConfig{}
+		config = yamlAllConfig.GnetConfig
 	case "Gev":
 		config = &gev.YamlConfig{}
 	case "Net":
@@ -56,11 +72,7 @@ func NewNetConfigWithConfig(path string,netName string) _interface.IConfig {
 	default:
 		fmt.Println("no expected net name")
 	}
-	//将配置文件读取到结构体中
-	err = yaml.Unmarshal(yamlFile, config)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+
 	return config
 }
 
