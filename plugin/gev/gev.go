@@ -17,7 +17,7 @@ type GevServer struct {
 	handler _interface.IEasyNet
 }
 
-func NewGevServer(ctx context.Context, config YamlConfig, handler _interface.IEasyNet) *GevServer {
+func NewGevServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *GevServer {
 	return &GevServer{
 		Ctx:       ctx,
 		addr:      fmt.Sprintf("%s://%s:%d", config.GetProtocol(), config.GetIp(), config.GetPort()),

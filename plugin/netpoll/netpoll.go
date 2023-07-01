@@ -11,21 +11,19 @@ import (
 type NetPollServer struct {
 	Ctx context.Context
 
-	Network   string
-	Address   string
-	multicore bool
+	config *YamlConfig
 
 	handler _interface.IEasyNet
 }
 
 func NewNetPollServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetPollServer {
-	return &NetPollServer{
+	server := &NetPollServer{
 		Ctx:       ctx,
-		Network:   config.GetProtocol(),
-		Address:   fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
-		multicore: false,
+		config: config,
 		handler:   handler,
 	}
+	return server
+
 
 }
 
@@ -33,7 +31,7 @@ func (s *NetPollServer) Run() error {
 
 	var eventLoop netpoll.EventLoop
 
-	listener, err := netpoll.CreateListener(s.Network, s.Address)
+	listener, err := netpoll.CreateListener(s.config.GetProtocol(), s.getAddr())
 	if err != nil {
 		fmt.Println("create netpoll listener failed")
 		return err
@@ -45,7 +43,7 @@ func (s *NetPollServer) Run() error {
 		connection.Read(b)
 		bytes, err := s.handler.OnReceive(connection, b)
 		if err != nil {
-			log.Printf("Gev server OnReceive ,err=$v \n", err)
+			log.Printf("netpoll server OnReceive ,err=$v \n", err)
 		}
 		connection.Write(bytes)
 		return err
@@ -59,7 +57,7 @@ func (s *NetPollServer) Run() error {
 
 	//type OnConnect func(ctx context.Context, connection Connection) context.Context
 	connect := func(ctx context.Context, connection netpoll.Connection) context.Context {
-		log.Printf("Gev server OnConnect \n")
+		log.Printf("netpoll server OnConnect \n")
 		err := s.handler.OnConnect(connection)
 		if err != nil {
 			log.Printf("Gev server OnConnect ,err=$v \n", err)
@@ -78,4 +76,8 @@ func (s *NetPollServer) Run() error {
 	eventLoop.Serve(listener)
 
 	return nil
+}
+
+func (s NetPollServer) getAddr() string {
+	return fmt.Sprintf("%s:%d", s.config.GetIp(), s.config.GetPort())
 }

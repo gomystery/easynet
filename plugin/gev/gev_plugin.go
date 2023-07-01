@@ -3,7 +3,6 @@ package gev
 import (
 	"context"
 	"github.com/Allenxuxu/gev"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"log"
 	"net"
@@ -43,10 +42,19 @@ func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handle
 }
 
 func (g GevEasyNetPlugin) Run() error {
-	s, err := gev.NewServer(g.Server,
+
+	var optionArr =[]gev.Option{
 		gev.Network(g.Config.Protocol),
 		gev.Address(":"+(strconv.Itoa(int(g.Config.Port)))),
-		gev.NumLoops(100),
+	}
+	if g.Config.GetNumloops() != 0 {
+		optionArr = append(optionArr, gev.NumLoops(int(g.Config.Numloops)))
+	}
+	if g.Config.GetReuseport() {
+		optionArr = append(optionArr, gev.ReusePort(g.Config.Reuseport))
+	}
+	s, err := gev.NewServer(g.Server,
+		optionArr...
 	)
 	if err != nil {
 		return err

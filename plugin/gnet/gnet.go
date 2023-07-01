@@ -18,17 +18,22 @@ type GnetServer struct {
 	eng       gnet.Engine
 	addr      string
 	multicore bool
+	config *YamlConfig
 
 	handler _interface.IEasyNet
 }
 
 func NewGnetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *GnetServer {
-	return &GnetServer{
+	server := &GnetServer{
 		Ctx:       ctx,
-		addr:      fmt.Sprintf("%s://%s:%d", config.GetProtocol(), config.GetIp(), config.GetPort()),
-		multicore: false,
 		handler:   handler,
+		config: config,
 	}
+
+	server.addr = server.getAddr()
+
+	return server
+
 }
 
 func (s *GnetServer) OnBoot(eng gnet.Engine) gnet.Action {
@@ -62,4 +67,8 @@ func (s *GnetServer) OnTraffic(c gnet.Conn) gnet.Action {
 	buf, _ := c.Next(-1)
 	s.handler.OnReceive(c, buf)
 	return gnet.None
+}
+
+func (s GnetServer) getAddr() string {
+	return fmt.Sprintf("%s://%s:%d", s.config.GetProtocol(), s.config.GetIp(), s.config.GetPort())
 }

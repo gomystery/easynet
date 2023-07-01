@@ -41,9 +41,35 @@ func NewGnetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handl
 }
 
 func (g GnetEasyNetPlugin) Run() error {
+
+	var optionArr =[]gnet.Option{}
+
+	if g.Config.GetMulticore() {
+		optionArr = append(optionArr, gnet.WithMulticore(g.Config.GetMulticore()))
+	}
+	if g.Config.GetLockosthread() {
+		optionArr = append(optionArr, gnet.WithLockOSThread(g.Config.GetLockosthread()))
+	}
+	if g.Config.GetReadBufferCap() > 0 {
+		optionArr = append(optionArr, gnet.WithReadBufferCap(int(g.Config.GetReadBufferCap())))
+	}
+	if g.Config.GetWriteBufferCap() > 0 {
+		optionArr = append(optionArr, gnet.WithWriteBufferCap(int(g.Config.GetWriteBufferCap())))
+	}
+	if g.Config.GetNumEventLoop() > 0 {
+		optionArr = append(optionArr, gnet.WithNumEventLoop(int(g.Config.GetNumEventLoop())))
+	}
+	if g.Config.GetReusePort() {
+		optionArr = append(optionArr, gnet.WithReusePort(g.Config.GetReusePort()))
+	}
+	if g.Config.GetReuseAddr() {
+		optionArr = append(optionArr, gnet.WithReuseAddr(g.Config.GetReuseAddr()))
+	}
+
+
 	err := gnet.Run(
 		g.Server,
 		g.Server.addr,
-		gnet.WithMulticore(g.Server.multicore))
+		optionArr...)
 	return err
 }
