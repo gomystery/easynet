@@ -15,8 +15,8 @@ type GnetServer struct {
 	Ctx context.Context
 	gnet.BuiltinEventEngine
 
-	eng       gnet.Engine
-	addr      string
+	eng    gnet.Engine
+	addr   string
 	config *YamlConfig
 
 	handler _interface.IEasyNet
@@ -24,9 +24,9 @@ type GnetServer struct {
 
 func NewGnetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *GnetServer {
 	server := &GnetServer{
-		Ctx:       ctx,
-		handler:   handler,
-		config: config,
+		Ctx:     ctx,
+		handler: handler,
+		config:  config,
 	}
 
 	server.addr = server.getAddr()

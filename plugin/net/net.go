@@ -35,11 +35,10 @@ func (s *NetServer) Run() error {
 		return err
 	}
 	if err := s.handler.OnStart(nil); err != nil {
-		logger.Errorf("net OnStart err %v",err)
+		logger.Errorf("net OnStart err %v", err)
 		return err
 	}
 	logger.Infoln("net OnStart")
-
 
 	for {
 		conn, err := ln.Accept()
@@ -52,7 +51,6 @@ func (s *NetServer) Run() error {
 			continue
 		}
 		logger.Infoln("net OnConnect")
-
 
 		go s.handleConnection(conn)
 	}
@@ -70,12 +68,12 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 	for {
 		_, err := conn.Read(rbuf)
 		if err != nil {
-			logger.Errorf("net read message err %v",err)
+			logger.Errorf("net read message err %v", err)
 			return
 		}
 
 		if wbuf, err = s.handler.OnReceive(conn, rbuf); err != nil {
-			logger.Errorf("net OnReceive err %v",err)
+			logger.Errorf("net OnReceive err %v", err)
 			return
 		}
 

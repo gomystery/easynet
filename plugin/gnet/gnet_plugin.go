@@ -24,7 +24,7 @@ func NewGnetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handl
 
 	var config *YamlConfig
 	var ok bool
-	if config,ok=iconfig.(*YamlConfig);!ok{
+	if config, ok = iconfig.(*YamlConfig); !ok {
 		log.Printf("gnet yaml error \n")
 	}
 
@@ -42,7 +42,7 @@ func NewGnetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handl
 
 func (g GnetEasyNetPlugin) Run() error {
 
-	var optionArr =[]gnet.Option{}
+	var optionArr = []gnet.Option{}
 
 	if g.Config.GetMulticore() {
 		optionArr = append(optionArr, gnet.WithMulticore(g.Config.GetMulticore()))
@@ -65,7 +65,6 @@ func (g GnetEasyNetPlugin) Run() error {
 	if g.Config.GetReuseAddr() {
 		optionArr = append(optionArr, gnet.WithReuseAddr(g.Config.GetReuseAddr()))
 	}
-
 
 	err := gnet.Run(
 		g.Server,

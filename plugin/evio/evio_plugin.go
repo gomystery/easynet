@@ -23,7 +23,7 @@ func NewEvioEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handl
 
 	var config *YamlConfig
 	var ok bool
-	if config,ok=iconfig.(*YamlConfig);!ok{
+	if config, ok = iconfig.(*YamlConfig); !ok {
 		logger.Error("evio yaml error \n")
 	}
 

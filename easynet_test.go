@@ -41,6 +41,6 @@ func TestEasyNet(t *testing.T) {
 
 func TestEasyNetWithYamlConfig(t *testing.T) {
 	handler := &Handler{}
-	gmet := NewEasyNetWithYamlConfig(context.Background(), "Evio",handler,"./base/confg.yaml" )
+	gmet := NewEasyNetWithYamlConfig(context.Background(), "Evio", handler, "./base/confg.yaml")
 	fmt.Println(gmet)
 }

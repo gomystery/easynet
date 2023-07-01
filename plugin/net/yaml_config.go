@@ -6,7 +6,6 @@ type YamlConfig struct {
 	Port     int32  `json:"port" yaml:"port"`
 }
 
-
 func (n *YamlConfig) GetProtocol() string {
 	return n.Protocol
 }

@@ -13,17 +13,17 @@ type EvioServer struct {
 	Ctx context.Context
 
 	config *YamlConfig
-	addr      string
+	addr   string
 
 	handler _interface.IEasyNet
 }
 
 func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *EvioServer {
 
-	s :=&EvioServer{
-		Ctx:       ctx,
-		handler:   handler,
-		config:config,
+	s := &EvioServer{
+		Ctx:     ctx,
+		handler: handler,
+		config:  config,
 	}
 	if s.config != nil {
 		s.addr = s.getAddr()
@@ -60,7 +60,7 @@ func (s EvioServer) Run() error {
 	}
 	events.Closed = func(c evio.Conn, inErr error) (action evio.Action) {
 		logger.Infoln("evio Opened OnClose")
-		err := s.handler.OnClose(c,inErr)
+		err := s.handler.OnClose(c, inErr)
 		if err != nil {
 			logger.Errorf("evio server OnClose error %v", err)
 		}
@@ -77,7 +77,7 @@ func (s EvioServer) Run() error {
 func (s EvioServer) getAddr() string {
 	if s.config.GetStdlib() {
 		ssuf := "-net"
-		return fmt.Sprintf("%s%s://%s:%d?reuseport=%t", s.config.GetProtocol(),ssuf, s.config.GetIp(), s.config.GetPort(),s.config.GetReuseport())
+		return fmt.Sprintf("%s%s://%s:%d?reuseport=%t", s.config.GetProtocol(), ssuf, s.config.GetIp(), s.config.GetPort(), s.config.GetReuseport())
 	}
-	return fmt.Sprintf("%s://%s:%d?reuseport=%t", s.config.GetProtocol(), s.config.GetIp(), s.config.GetPort(),s.config.GetReuseport())
+	return fmt.Sprintf("%s://%s:%d?reuseport=%t", s.config.GetProtocol(), s.config.GetIp(), s.config.GetPort(), s.config.GetReuseport())
 }

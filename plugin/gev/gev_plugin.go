@@ -25,7 +25,7 @@ func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handle
 
 	var config *YamlConfig
 	var ok bool
-	if config,ok=iconfig.(*YamlConfig);!ok{
+	if config, ok = iconfig.(*YamlConfig); !ok {
 		logger.Errorln("gev yaml error ")
 	}
 
@@ -43,9 +43,9 @@ func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handle
 
 func (g GevEasyNetPlugin) Run() error {
 
-	var optionArr =[]gev.Option{
+	var optionArr = []gev.Option{
 		gev.Network(g.Config.Protocol),
-		gev.Address(":"+(strconv.Itoa(int(g.Config.Port)))),
+		gev.Address(":" + (strconv.Itoa(int(g.Config.Port)))),
 	}
 	if g.Config.GetNumloops() != 0 {
 		optionArr = append(optionArr, gev.NumLoops(int(g.Config.Numloops)))
@@ -54,7 +54,7 @@ func (g GevEasyNetPlugin) Run() error {
 		optionArr = append(optionArr, gev.ReusePort(g.Config.Reuseport))
 	}
 	s, err := gev.NewServer(g.Server,
-		optionArr...
+		optionArr...,
 	)
 	if err != nil {
 		return err

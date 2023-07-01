@@ -23,7 +23,7 @@ func NewNetPollEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, ha
 
 	var config *YamlConfig
 	var ok bool
-	if config,ok=iconfig.(*YamlConfig);!ok{
+	if config, ok = iconfig.(*YamlConfig); !ok {
 		logger.Errorln("netpoll yaml error ")
 	}
 

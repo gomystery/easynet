@@ -21,10 +21,9 @@ type NetEasyNetPlugin struct {
 
 func NewNetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *NetEasyNetPlugin {
 
-
 	var config *YamlConfig
 	var ok bool
-	if config,ok=iconfig.(*YamlConfig);!ok{
+	if config, ok = iconfig.(*YamlConfig); !ok {
 		logger.Errorln("net yaml error ")
 	}
 

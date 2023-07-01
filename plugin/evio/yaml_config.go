@@ -1,14 +1,13 @@
 package evio
 
 type YamlConfig struct {
-	Protocol string `json:"protocol" yaml:"protocol"`
-	Ip       string `json:"ip" yaml:"ip"`
-	Port     int32  `json:"port" yaml:"port"`
-	Reuseport bool `json:"reuseport" yaml:"reuseport"`
-	Stdlib bool `json:"stdlib" yaml:"stdlib"`
-	Loops int32 `json:"loops" yaml:"loops"`
+	Protocol  string `json:"protocol" yaml:"protocol"`
+	Ip        string `json:"ip" yaml:"ip"`
+	Port      int32  `json:"port" yaml:"port"`
+	Reuseport bool   `json:"reuseport" yaml:"reuseport"`
+	Stdlib    bool   `json:"stdlib" yaml:"stdlib"`
+	Loops     int32  `json:"loops" yaml:"loops"`
 }
-
 
 func (n *YamlConfig) GetProtocol() string {
 	return n.Protocol

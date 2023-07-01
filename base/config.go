@@ -21,13 +21,12 @@ import (
 */
 
 type YamlAllConfig struct {
-	EvioConfig *evio.YamlConfig `json:"evio_config" yaml:"evio_config"`
-	GevConfig *gev.YamlConfig `json:"gev_config" yaml:"gev_config"`
-	GnetConfig *gnet.YamlConfig `json:"gnet_config" yaml:"gnet_config"`
-	NetConfig *net.YamlConfig `json:"net_config" yaml:"net_config"`
+	EvioConfig    *evio.YamlConfig    `json:"evio_config" yaml:"evio_config"`
+	GevConfig     *gev.YamlConfig     `json:"gev_config" yaml:"gev_config"`
+	GnetConfig    *gnet.YamlConfig    `json:"gnet_config" yaml:"gnet_config"`
+	NetConfig     *net.YamlConfig     `json:"net_config" yaml:"net_config"`
 	NetpollConfig *netpoll.YamlConfig `json:"netpoll_config" yaml:"netpoll_config"`
 }
-
 
 type DeFaultNetConfig struct {
 	Protocol string `json:"protocol"`
@@ -35,7 +34,7 @@ type DeFaultNetConfig struct {
 	Port     int32  `json:"port"`
 }
 
-func NewDefaultNetConfig(Protocol string, Ip string, Port int32) _interface.IConfig  {
+func NewDefaultNetConfig(Protocol string, Ip string, Port int32) _interface.IConfig {
 	return &DeFaultNetConfig{
 		Protocol: Protocol,
 		Ip:       Ip,
@@ -44,18 +43,18 @@ func NewDefaultNetConfig(Protocol string, Ip string, Port int32) _interface.ICon
 }
 
 // todo yaml
-func NewNetConfigWithConfig(path string,netName string) _interface.IConfig {
+func NewNetConfigWithConfig(path string, netName string) _interface.IConfig {
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
-		logger.Errorf("read yamlFile err :%v",err)
+		logger.Errorf("read yamlFile err :%v", err)
 	}
 	//将配置文件读取到结构体中
 	yamlAllConfig := &YamlAllConfig{}
 	err = yaml.Unmarshal(yamlFile, yamlAllConfig)
 	if err != nil {
-		logger.Errorf(" yamlFile Unmarshal err :%v",err)
+		logger.Errorf(" yamlFile Unmarshal err :%v", err)
 	}
-	logger.Infoln("read yamlFile yamlAllConfig :%v",yamlAllConfig)
+	logger.Infoln("read yamlFile yamlAllConfig :%v", yamlAllConfig)
 
 	//var _config *config.Config
 	var config _interface.IConfig
@@ -75,7 +74,7 @@ func NewNetConfigWithConfig(path string,netName string) _interface.IConfig {
 	default:
 		logger.Errorln("no expected net name")
 	}
-	logger.Infoln("read yamlFile :%v",config)
+	logger.Infoln("read yamlFile :%v", config)
 
 	return config
 }
