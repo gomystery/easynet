@@ -1,7 +1,7 @@
 package base
 
 import (
-	"fmt"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
 	"github.com/gomystery/easynet/plugin/gev"
@@ -47,31 +47,35 @@ func NewDefaultNetConfig(Protocol string, Ip string, Port int32) _interface.ICon
 func NewNetConfigWithConfig(path string,netName string) _interface.IConfig {
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
-		fmt.Println(err.Error())
+		logger.Errorf("read yamlFile err :%v",err)
 	}
 	//将配置文件读取到结构体中
 	yamlAllConfig := &YamlAllConfig{}
 	err = yaml.Unmarshal(yamlFile, yamlAllConfig)
 	if err != nil {
-		fmt.Println(err.Error())
+		logger.Errorf(" yamlFile Unmarshal err :%v",err)
 	}
+	logger.Infoln("read yamlFile yamlAllConfig :%v",yamlAllConfig)
+
 	//var _config *config.Config
 	var config _interface.IConfig
 	switch netName {
 	case "Gnet":
+
 		config = yamlAllConfig.GnetConfig
 	case "Gev":
-		config = &gev.YamlConfig{}
+		config = yamlAllConfig.GevConfig
 	case "Net":
-		config = &net.YamlConfig{}
+		config = yamlAllConfig.NetConfig
 	case "NetPoll":
-		config = &netpoll.YamlConfig{}
+		config = yamlAllConfig.NetpollConfig
 	case "Evio":
-		config = &evio.YamlConfig{}
+		config = yamlAllConfig.EvioConfig
 
 	default:
-		fmt.Println("no expected net name")
+		logger.Errorln("no expected net name")
 	}
+	logger.Infoln("read yamlFile :%v",config)
 
 	return config
 }

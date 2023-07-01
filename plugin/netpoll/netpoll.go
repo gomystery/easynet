@@ -36,6 +36,13 @@ func (s *NetPollServer) Run() error {
 		logger.Errorf("create netpoll listener failed err:%v",err)
 		return err
 	}
+	err = s.handler.OnStart(nil)
+	if err != nil {
+		logger.Errorf("create netpoll OnStart failed err:%v",err)
+		return err
+	}
+	logger.Infof("create netpoll OnStart,Protocol:%v ,addr:%v",s.config.GetProtocol(), s.getAddr())
+
 
 	//type OnRequest func(ctx context.Context, connection Connection) error
 	handle := func(ctx context.Context, connection netpoll.Connection) error {

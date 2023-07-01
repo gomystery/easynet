@@ -1,7 +1,7 @@
 evio_config:
   protocol: tcp
   ip: 127.0.0.1
-  port: 80
+  port: 9011
   reuseport: false
   stdlib: false
 #  可以选择使用 stdlib（stdlib 主要是为了支持 非 *unix 平台）
@@ -9,13 +9,13 @@ evio_config:
 gev_config:
   protocol: tcp
   ip: 127.0.0.1
-  port: 80
+  port: 9011
   numloops: 1
   reuseport: false
 gnet_config:
   protocol: tcp
   ip: 127.0.0.1
-  port: 80
+  port: 9011
   multicore: true
   lockosthread: false
   readbuffercap: 1000
@@ -26,11 +26,11 @@ gnet_config:
 net_config:
   protocol: tcp
   ip: 127.0.0.1
-  port: 80
+  port: 9011
 netpoll_config:
   protocol: tcp
   ip: 127.0.0.1
-  port: 80
+  port: 9011
 
 log:
   console: true
