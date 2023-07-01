@@ -5,6 +5,7 @@ import (
 	"github.com/Allenxuxu/gev"
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
+	"log"
 	"net"
 	"strconv"
 )
@@ -14,14 +15,21 @@ type GevEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *GevServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewGevEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GevEasyNetPlugin {
+func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *GevEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config,ok=iconfig.(*YamlConfig);!ok{
+		log.Printf("gev yaml error \n")
+	}
+
 	easyNetPlugin := &GevEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

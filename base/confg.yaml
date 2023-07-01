@@ -1,0 +1,16 @@
+evio:
+  protocol: tcp
+  ip: 127.0.0.1
+  port:
+gev:
+  protocol: tcp
+  ip: 127.0.0.1
+  port: 80
+gnet:
+  protocol: tcp
+  ip: 127.0.0.1
+  port: 80
+netpoll:
+  protocol: tcp
+  ip: 127.0.0.1
+  port: 80

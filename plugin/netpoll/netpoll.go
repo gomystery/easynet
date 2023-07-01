@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudwego/netpoll"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"log"
 )
@@ -19,7 +18,7 @@ type NetPollServer struct {
 	handler _interface.IEasyNet
 }
 
-func NewNetPollServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetPollServer {
+func NewNetPollServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetPollServer {
 	return &NetPollServer{
 		Ctx:       ctx,
 		Network:   config.GetProtocol(),

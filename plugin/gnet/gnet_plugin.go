@@ -2,9 +2,9 @@ package gnet
 
 import (
 	"context"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/panjf2000/gnet/v2"
+	"log"
 	"net"
 )
 
@@ -13,14 +13,21 @@ type GnetEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *GnetServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewGnetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GnetEasyNetPlugin {
+func NewGnetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *GnetEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config,ok=iconfig.(*YamlConfig);!ok{
+		log.Printf("gnet yaml error \n")
+	}
+
 	gnetEasyNetPlugin := &GnetEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

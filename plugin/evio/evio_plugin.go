@@ -2,8 +2,8 @@ package evio
 
 import (
 	"context"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
+	"log"
 	"net"
 )
 
@@ -12,21 +12,28 @@ type EvioEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *EvioServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewEvioGmtNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *EvioEasyNetPlugin {
+func NewEvioEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *EvioEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config,ok=iconfig.(*YamlConfig);!ok{
+		log.Printf("evio yaml error \n")
+	}
+
 	evioEasyNetPlugin := &EvioEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
 		Handler: handler,
 	}
 
-	server := NewGnetServer(ctx, config, handler)
+	server := NewEvioServer(ctx, config, handler)
 	evioEasyNetPlugin.Server = server
 
 	return evioEasyNetPlugin

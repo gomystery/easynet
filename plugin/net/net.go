@@ -3,7 +3,6 @@ package net
 import (
 	"context"
 	"fmt"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"net"
 )
@@ -18,7 +17,7 @@ type NetServer struct {
 	handler _interface.IEasyNet
 }
 
-func NewNetServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetServer {
+func NewNetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetServer {
 	return &NetServer{
 		Ctx:       ctx,
 		Network:   config.GetProtocol(),

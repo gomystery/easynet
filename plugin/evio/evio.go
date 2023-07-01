@@ -3,7 +3,6 @@ package evio
 import (
 	"context"
 	"fmt"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/tidwall/evio"
 	"log"
@@ -18,7 +17,7 @@ type EvioServer struct {
 	handler _interface.IEasyNet
 }
 
-func NewGnetServer(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *EvioServer {
+func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *EvioServer {
 	return &EvioServer{
 		Ctx:       ctx,
 		addr:      fmt.Sprintf("%s://%s:%d", config.GetProtocol(), config.GetIp(), config.GetPort()),

@@ -33,7 +33,7 @@ func (h Handler) OnClose(conn interface{}, err error) error {
 }
 
 func TestGnet(t *testing.T) {
-	config := base.NewNetConfig("tcp", "127.0.0.1", 9011)
+	config := base.NewDefaultNetConfig("tcp", "127.0.0.1", 9011)
 	handler := &Handler{}
 	gmet := NewEasyNet(context.Background(), "NetPoll", config, handler)
 	fmt.Println(gmet)
