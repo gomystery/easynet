@@ -3,8 +3,8 @@ package gev
 import (
 	"context"
 	"github.com/Allenxuxu/gev"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"log"
 	"net"
 	"strconv"
 )
@@ -26,7 +26,7 @@ func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handle
 	var config *YamlConfig
 	var ok bool
 	if config,ok=iconfig.(*YamlConfig);!ok{
-		log.Printf("gev yaml error \n")
+		logger.Errorln("gev yaml error ")
 	}
 
 	easyNetPlugin := &GevEasyNetPlugin{

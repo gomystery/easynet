@@ -13,6 +13,7 @@ require (
 	github.com/Allenxuxu/ringbuffer v0.0.11 // indirect
 	github.com/Allenxuxu/toolkit v0.0.1 // indirect
 	github.com/RussellLuo/timingwheel v0.0.0-20201029015908-64de9d088c74 // indirect
+	github.com/baickl/logger v0.0.0-20150522014057-77e382cc2a29 // indirect
 	github.com/bytedance/gopkg v0.0.0-20220413063733-65bf48ffb3a7 // indirect
 	github.com/kavu/go_reuseport v1.4.0 // indirect
 	github.com/libp2p/go-reuseport v0.0.1 // indirect

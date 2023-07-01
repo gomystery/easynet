@@ -2,8 +2,8 @@ package evio
 
 import (
 	"context"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"log"
 	"net"
 )
 
@@ -24,7 +24,7 @@ func NewEvioEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handl
 	var config *YamlConfig
 	var ok bool
 	if config,ok=iconfig.(*YamlConfig);!ok{
-		log.Printf("evio yaml error \n")
+		logger.Error("evio yaml error \n")
 	}
 
 	evioEasyNetPlugin := &EvioEasyNetPlugin{

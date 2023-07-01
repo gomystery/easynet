@@ -31,3 +31,10 @@ netpoll_config:
   protocol: tcp
   ip: 127.0.0.1
   port: 80
+
+log:
+  console: true
+  level: debug
+  dir: ./log
+
+

@@ -3,6 +3,7 @@ package evio
 import (
 	"context"
 	"fmt"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"github.com/tidwall/evio"
 	"log"
@@ -34,7 +35,7 @@ func (s EvioServer) Run() error {
 	var events evio.Events
 	events.NumLoops = int(s.config.GetLoops())
 	events.Opened = func(c evio.Conn) (out []byte, opts evio.Options, action evio.Action) {
-		log.Printf("evio Opened OnConnect")
+		logger.Infoln("evio Opened OnConnect")
 		err := s.handler.OnConnect(c)
 		if err != nil {
 			log.Printf("evio server OnConnect error %v", err)
@@ -43,31 +44,31 @@ func (s EvioServer) Run() error {
 	}
 
 	events.Serving = func(srv evio.Server) (action evio.Action) {
-		log.Printf("evio server OnStart")
+		logger.Infoln("evio server OnStart")
 		err := s.handler.OnStart(nil)
 		if err != nil {
-			log.Printf("evio server OnStart error %v", err)
+			logger.Errorf("evio server OnStart error %v", err)
 		}
 		return
 	}
 	events.Data = func(c evio.Conn, in []byte) (out []byte, action evio.Action) {
 		out, err := s.handler.OnReceive(c, in)
 		if err != nil {
-			log.Printf("evio server OnReceive err %v", err)
+			logger.Errorf("evio server OnReceive err %v", err)
 		}
 		return
 	}
 	events.Closed = func(c evio.Conn, inErr error) (action evio.Action) {
-		log.Printf("evio Opened OnClose")
+		logger.Infoln("evio Opened OnClose")
 		err := s.handler.OnClose(c,inErr)
 		if err != nil {
-			log.Printf("evio server OnClose error %v", err)
+			logger.Errorf("evio server OnClose error %v", err)
 		}
 		return
 	}
 	err := evio.Serve(events, s.addr)
 	if err != nil {
-		log.Printf("evio Serve error %v", err)
+		logger.Errorf("evio Serve error %v", err)
 		return err
 	}
 	return nil

@@ -2,8 +2,8 @@ package netpoll
 
 import (
 	"context"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"log"
 	"net"
 )
 
@@ -24,7 +24,7 @@ func NewNetPollEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, ha
 	var config *YamlConfig
 	var ok bool
 	if config,ok=iconfig.(*YamlConfig);!ok{
-		log.Printf("netpoll yaml error \n")
+		logger.Errorln("netpoll yaml error ")
 	}
 
 	easyNetPlugin := &NetPollEasyNetPlugin{

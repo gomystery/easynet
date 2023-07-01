@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
@@ -13,6 +14,10 @@ import (
 	np "github.com/gomystery/easynet/plugin/net"
 	"github.com/gomystery/easynet/plugin/netpoll"
 )
+
+func init() {
+	logger.Initialize("./log","LoginServer")
+}
 
 type EasyNet struct {
 	handler _interface.IEasyNet
@@ -65,7 +70,7 @@ func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, 
 			fmt.Println(err)
 		}
 	default:
-		fmt.Println("no expected net plugin")
+		logger.Errorln("no expected net plugin")
 	}
 
 	return easynet

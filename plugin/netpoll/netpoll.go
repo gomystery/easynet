@@ -3,9 +3,9 @@ package netpoll
 import (
 	"context"
 	"fmt"
+	"github.com/baickl/logger"
 	"github.com/cloudwego/netpoll"
 	"github.com/gomystery/easynet/interface"
-	"log"
 )
 
 type NetPollServer struct {
@@ -33,7 +33,7 @@ func (s *NetPollServer) Run() error {
 
 	listener, err := netpoll.CreateListener(s.config.GetProtocol(), s.getAddr())
 	if err != nil {
-		fmt.Println("create netpoll listener failed")
+		logger.Errorf("create netpoll listener failed err:%v",err)
 		return err
 	}
 
@@ -43,24 +43,24 @@ func (s *NetPollServer) Run() error {
 		connection.Read(b)
 		bytes, err := s.handler.OnReceive(connection, b)
 		if err != nil {
-			log.Printf("netpoll server OnReceive ,err=$v \n", err)
+			logger.Errorf("netpoll server OnReceive ,err=$v \n", err)
 		}
 		connection.Write(bytes)
 		return err
 	}
 	// todo is right
 	prepare := func(connection netpoll.Connection) context.Context {
-		fmt.Println(connection)
+		logger.Infoln("netpoll server OnStart")
 		s.handler.OnStart(connection)
 		return s.Ctx
 	}
 
 	//type OnConnect func(ctx context.Context, connection Connection) context.Context
 	connect := func(ctx context.Context, connection netpoll.Connection) context.Context {
-		log.Printf("netpoll server OnConnect \n")
+		logger.Infoln("netpoll server OnConnect")
 		err := s.handler.OnConnect(connection)
 		if err != nil {
-			log.Printf("Gev server OnConnect ,err=$v \n", err)
+			logger.Errorf("netpoll server OnConnect ,err=$v \n", err)
 		}
 		return ctx
 	}

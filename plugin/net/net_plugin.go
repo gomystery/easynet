@@ -2,8 +2,8 @@ package net
 
 import (
 	"context"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"log"
 	"net"
 )
 
@@ -25,7 +25,7 @@ func NewNetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handle
 	var config *YamlConfig
 	var ok bool
 	if config,ok=iconfig.(*YamlConfig);!ok{
-		log.Printf("net yaml error \n")
+		logger.Errorln("net yaml error ")
 	}
 
 	easyNetPlugin := &NetEasyNetPlugin{
