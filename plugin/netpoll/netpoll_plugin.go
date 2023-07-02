@@ -2,7 +2,7 @@ package netpoll
 
 import (
 	"context"
-	"github.com/gomystery/easynet/base"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"net"
 )
@@ -12,14 +12,21 @@ type NetPollEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *NetPollServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewNetPollEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetPollEasyNetPlugin {
+func NewNetPollEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *NetPollEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config, ok = iconfig.(*YamlConfig); !ok {
+		logger.Errorln("netpoll yaml error ")
+	}
+
 	easyNetPlugin := &NetPollEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

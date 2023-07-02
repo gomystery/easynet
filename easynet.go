@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
@@ -13,6 +14,10 @@ import (
 	np "github.com/gomystery/easynet/plugin/net"
 	"github.com/gomystery/easynet/plugin/netpoll"
 )
+
+func init() {
+	logger.Initialize("./log", "LoginServer")
+}
 
 type EasyNet struct {
 	handler _interface.IEasyNet
@@ -23,10 +28,10 @@ type EasyNet struct {
 
 	EasyNetPlugin _interface.IPlugin
 
-	Config *base.NetConfig
+	Config *base.DeFaultNetConfig
 }
 
-func NewEasyNet(ctx context.Context, netName string, config *base.NetConfig, handler _interface.IEasyNet) *EasyNet {
+func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, handler _interface.IEasyNet) *EasyNet {
 	easynet := &EasyNet{
 		Ctx:     ctx,
 		handler: handler,
@@ -59,13 +64,63 @@ func NewEasyNet(ctx context.Context, netName string, config *base.NetConfig, han
 			fmt.Println(err)
 		}
 	case "Evio":
-		easynet.EasyNetPlugin = evio.NewEvioGmtNetPlugin(ctx, config, handler)
+		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	default:
-		fmt.Println("no expected net plugin")
+		logger.Errorln("no expected net plugin")
+	}
+
+	return easynet
+}
+
+func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _interface.IEasyNet, path string) *EasyNet {
+	easynet := &EasyNet{
+		Ctx:     ctx,
+		handler: handler,
+	}
+
+	// todo new EasyNetPlugin
+	switch netName {
+	case "Gnet":
+		config := base.NewNetConfigWithConfig(path, netName)
+		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, config, handler)
+		err := easynet.EasyNetPlugin.Run()
+		if err != nil {
+			logger.Errorf("Gnet run err :%v", err)
+		}
+	case "Gev":
+		config := base.NewNetConfigWithConfig(path, netName)
+		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, config, handler)
+		err := easynet.EasyNetPlugin.Run()
+		if err != nil {
+			logger.Errorf("Gev run err :%v", err)
+		}
+	case "Net":
+		config := base.NewNetConfigWithConfig(path, netName)
+		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, config, handler)
+		err := easynet.EasyNetPlugin.Run()
+		if err != nil {
+			logger.Errorf("Net run err :%v", err)
+		}
+	case "NetPoll":
+		config := base.NewNetConfigWithConfig(path, netName)
+		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, config, handler)
+		err := easynet.EasyNetPlugin.Run()
+		if err != nil {
+			logger.Errorf("NetPoll run err :%v", err)
+		}
+	case "Evio":
+		config := base.NewNetConfigWithConfig(path, netName)
+		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, config, handler)
+		err := easynet.EasyNetPlugin.Run()
+		if err != nil {
+			logger.Errorf("Evio run err :%v", err)
+		}
+	default:
+		logger.Errorln("no expected net plugin")
 	}
 
 	return easynet

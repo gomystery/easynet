@@ -3,7 +3,7 @@ package gev
 import (
 	"context"
 	"github.com/Allenxuxu/gev"
-	"github.com/gomystery/easynet/base"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"net"
 	"strconv"
@@ -14,14 +14,21 @@ type GevEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *GevServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewGevEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *GevEasyNetPlugin {
+func NewGevEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *GevEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config, ok = iconfig.(*YamlConfig); !ok {
+		logger.Errorln("gev yaml error ")
+	}
+
 	easyNetPlugin := &GevEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,
@@ -35,10 +42,19 @@ func NewGevEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _i
 }
 
 func (g GevEasyNetPlugin) Run() error {
-	s, err := gev.NewServer(g.Server,
+
+	var optionArr = []gev.Option{
 		gev.Network(g.Config.Protocol),
-		gev.Address(":"+(strconv.Itoa(int(g.Config.Port)))),
-		gev.NumLoops(100),
+		gev.Address(":" + (strconv.Itoa(int(g.Config.Port)))),
+	}
+	if g.Config.GetNumloops() != 0 {
+		optionArr = append(optionArr, gev.NumLoops(int(g.Config.Numloops)))
+	}
+	if g.Config.GetReuseport() {
+		optionArr = append(optionArr, gev.ReusePort(g.Config.Reuseport))
+	}
+	s, err := gev.NewServer(g.Server,
+		optionArr...,
 	)
 	if err != nil {
 		return err

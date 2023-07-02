@@ -2,7 +2,7 @@ package net
 
 import (
 	"context"
-	"github.com/gomystery/easynet/base"
+	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"net"
 )
@@ -12,14 +12,21 @@ type NetEasyNetPlugin struct {
 
 	Ctx context.Context
 
-	Config *base.NetConfig
+	Config *YamlConfig
 
 	Server *NetServer
 
 	Handler _interface.IEasyNet
 }
 
-func NewNetEasyNetPlugin(ctx context.Context, config *base.NetConfig, handler _interface.IEasyNet) *NetEasyNetPlugin {
+func NewNetEasyNetPlugin(ctx context.Context, iconfig _interface.IConfig, handler _interface.IEasyNet) *NetEasyNetPlugin {
+
+	var config *YamlConfig
+	var ok bool
+	if config, ok = iconfig.(*YamlConfig); !ok {
+		logger.Errorln("net yaml error ")
+	}
+
 	easyNetPlugin := &NetEasyNetPlugin{
 		Ctx:     ctx,
 		Config:  config,

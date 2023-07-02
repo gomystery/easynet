@@ -4,9 +4,11 @@ go 1.19
 
 require (
 	github.com/Allenxuxu/gev v0.5.0
+	github.com/baickl/logger v0.0.0-20150522014057-77e382cc2a29
 	github.com/cloudwego/netpoll v0.3.2
 	github.com/panjf2000/gnet/v2 v2.2.9
 	github.com/tidwall/evio v1.0.2
+	gopkg.in/yaml.v2 v2.3.0
 )
 
 require (
