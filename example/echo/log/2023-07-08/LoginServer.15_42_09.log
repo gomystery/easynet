@@ -1,7 +1,0 @@
-2023/07/08 15:42:09.459145 config.go:58: INFO read yamlFile yamlAllConfig :%v &{0xc000115920 0xc000115a10 0xc000164bc0 0xc000115bc0 0xc000115cb0}
-2023/07/08 15:42:09.459263 config.go:78: INFO read yamlFile :%v &{tcp 127.0.0.1 9011}
-2023/07/08 15:42:09.459804 netpoll.go:44: INFO create netpoll OnStart,Protocol:tcp ,addr:127.0.0.1:9011
-2023/07/08 15:42:16.417187 netpoll.go:71: INFO netpoll server OnStart
-2023/07/08 15:42:16.417404 netpoll.go:78: INFO netpoll server OnConnect
-2023/07/08 15:43:47.855822 netpoll.go:71: INFO netpoll server OnStart
-2023/07/08 15:43:47.856619 netpoll.go:78: INFO netpoll server OnConnect
