@@ -69,7 +69,16 @@ func (s *GnetServer) OnTick() (delay time.Duration, action gnet.Action) {
 func (s *GnetServer) OnTraffic(c gnet.Conn) gnet.Action {
 	logger.Infoln("Gnet OnReceive")
 	buf, _ := c.Next(-1)
-	s.handler.OnReceive(c, buf)
+	out,err:=s.handler.OnReceive(c, buf)
+	if err != nil {
+		return gnet.Close
+	}
+	if len(out) != 0 {
+		_,err:= c.Write(out)
+		if err != nil {
+			return gnet.Close
+		}
+	}
 	return gnet.None
 }
 

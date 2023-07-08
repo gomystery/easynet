@@ -27,12 +27,13 @@ func main() {
 	msg := "hello easy net "
 
 	fmt.Println(0, "connect ok! sending file...")
-	conn.Write([]byte(msg))
+	n,err:=conn.Write([]byte(msg))
+	fmt.Println("Write msg",string(msg),n,err)
 
 	time.Sleep(time.Second * 2)
 
 	var readstr  = make([]byte,len(msg))
-	n,err:=conn.Read(readstr)
+	n,err=conn.Read(readstr)
 	fmt.Println("read msg",string(readstr),n,err)
 
 	time.Sleep(time.Second * 2)

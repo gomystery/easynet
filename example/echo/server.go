@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/cloudwego/netpoll"
-
 	"github.com/gomystery/easynet"
 )
 
@@ -17,13 +15,13 @@ func (h Handler) OnStart(conn interface{}) error {
 }
 
 func (h Handler) OnConnect(conn interface{}) error {
-	netpollConn, ok:= conn.(netpoll.Connection)
-	if !ok {
-		fmt.Println("test conn err")
-	}
-
-	fmt.Println("test conn LocalAddr",netpollConn.LocalAddr())
-	fmt.Println("test conn RemoteAddr",netpollConn.RemoteAddr())
+	//netpollConn, ok:= conn.(netpoll.Connection)
+	//if !ok {
+	//	fmt.Println("test conn err")
+	//}
+	//
+	//fmt.Println("test conn LocalAddr",netpollConn.LocalAddr())
+	//fmt.Println("test conn RemoteAddr",netpollConn.RemoteAddr())
 
 	return nil
 
@@ -52,6 +50,10 @@ func (h Handler) OnClose(conn interface{}, err error) error {
 func main() {
 	handler := &Handler{}
 	easynet.NewEasyNetWithYamlConfig(context.Background(), "NetPoll", handler, "../../base/confg.yaml")
+	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Evio", handler, "../../base/confg.yaml")
+	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Net", handler, "../../base/confg.yaml")
+	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Gev", handler, "../../base/confg.yaml")
+	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Gnet", handler, "../../base/confg.yaml")
 
 
 }
