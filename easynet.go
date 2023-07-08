@@ -28,7 +28,6 @@ type EasyNet struct {
 
 	EasyNetPlugin _interface.IPlugin
 
-	Config *base.DeFaultNetConfig
 }
 
 func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, handler _interface.IEasyNet) *EasyNet {

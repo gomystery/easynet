@@ -1,0 +1,4 @@
+2023/07/08 15:44:45.980927 config.go:58: INFO read yamlFile yamlAllConfig :%v &{0xc000079920 0xc000079a10 0xc000126bc0 0xc000079bc0 0xc000079cb0}
+2023/07/08 15:44:45.981012 config.go:78: INFO read yamlFile :%v &{tcp 127.0.0.1 9011}
+2023/07/08 15:44:45.981141 netpoll.go:36: ERROR create netpoll listener failed err:listen tcp 127.0.0.1:9011: bind: address already in use
+2023/07/08 15:44:45.981168 easynet.go:112: ERROR NetPoll run err :listen tcp 127.0.0.1:9011: bind: address already in use
