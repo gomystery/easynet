@@ -3,6 +3,7 @@ package netpoll
 import (
 	"context"
 	"fmt"
+
 	"github.com/baickl/logger"
 	"github.com/cloudwego/netpoll"
 	"github.com/gomystery/easynet/interface"

@@ -1,6 +1,8 @@
 package base
 
 import (
+	"io/ioutil"
+
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
@@ -9,7 +11,6 @@ import (
 	"github.com/gomystery/easynet/plugin/net"
 	"github.com/gomystery/easynet/plugin/netpoll"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 )
 
 /*

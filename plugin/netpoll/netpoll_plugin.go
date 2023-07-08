@@ -2,9 +2,10 @@ package netpoll
 
 import (
 	"context"
+	"net"
+
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"net"
 )
 
 type NetPollEasyNetPlugin struct {

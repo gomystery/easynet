@@ -3,10 +3,11 @@ package evio
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"github.com/tidwall/evio"
-	"log"
 )
 
 type EvioServer struct {

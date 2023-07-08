@@ -3,9 +3,10 @@ package net
 import (
 	"context"
 	"fmt"
+	"net"
+
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"net"
 )
 
 type NetServer struct {

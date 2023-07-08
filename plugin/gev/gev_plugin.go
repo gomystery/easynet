@@ -2,11 +2,12 @@ package gev
 
 import (
 	"context"
+	"net"
+	"strconv"
+
 	"github.com/Allenxuxu/gev"
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"net"
-	"strconv"
 )
 
 type GevEasyNetPlugin struct {
