@@ -2,10 +2,11 @@ package gnet
 
 import (
 	"context"
-	"github.com/gomystery/easynet/interface"
-	"github.com/panjf2000/gnet/v2"
 	"log"
 	"net"
+
+	"github.com/gomystery/easynet/interface"
+	"github.com/panjf2000/gnet/v2"
 )
 
 type GnetEasyNetPlugin struct {

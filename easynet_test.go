@@ -3,8 +3,9 @@ package easynet
 import (
 	"context"
 	"fmt"
-	"github.com/gomystery/easynet/base"
 	"testing"
+
+	"github.com/gomystery/easynet/base"
 )
 
 type Handler struct {

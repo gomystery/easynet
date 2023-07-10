@@ -3,9 +3,11 @@ package net
 import (
 	"context"
 	"fmt"
+	"net"
+	"time"
+
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
-	"net"
 )
 
 type NetServer struct {
@@ -13,7 +15,6 @@ type NetServer struct {
 
 	Network   string
 	Address   string
-	multicore bool
 
 	handler _interface.IEasyNet
 }
@@ -23,7 +24,6 @@ func NewNetServer(ctx context.Context, config *YamlConfig, handler _interface.IE
 		Ctx:       ctx,
 		Network:   config.GetProtocol(),
 		Address:   fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
-		multicore: false,
 		handler:   handler,
 	}
 
@@ -62,14 +62,19 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 	defer conn.Close()
 
 	//4、获取客户端的网络地址信息
-	rbuf, wbuf := []byte{}, []byte{}
+	rbuf, wbuf := make([]byte, 256), []byte{}
 
 	//5、获取用户数据
 	for {
-		_, err := conn.Read(rbuf)
+		rlen, err := conn.Read(rbuf)
 		if err != nil {
 			logger.Errorf("net read message err %v", err)
 			return
+		}
+		if rlen <= 0{
+			//logger.Infoln("rlen err %v", rlen)
+			time.Sleep(time.Second * 1)
+			continue
 		}
 
 		if wbuf, err = s.handler.OnReceive(conn, rbuf); err != nil {
@@ -78,6 +83,8 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 		}
 
 		//6、给用户发送回去
-		conn.Write(wbuf)
+		if len(wbuf) > 0 {
+			conn.Write(wbuf)
+		}
 	}
 }

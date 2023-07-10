@@ -3,6 +3,7 @@ package netpoll
 import (
 	"context"
 	"fmt"
+
 	"github.com/baickl/logger"
 	"github.com/cloudwego/netpoll"
 	"github.com/gomystery/easynet/interface"
@@ -44,13 +45,28 @@ func (s *NetPollServer) Run() error {
 
 	//type OnRequest func(ctx context.Context, connection Connection) error
 	handle := func(ctx context.Context, connection netpoll.Connection) error {
-		var b []byte
-		connection.Read(b)
-		bytes, err := s.handler.OnReceive(connection, b)
+
+		var reader, writer = connection.Reader(), connection.Writer()
+
+		// reading
+		buf, _ := reader.Next(reader.Len())
+		reader.Release()
+		//... parse the read data ...
+		//var write_data []byte
+		write_data, err := s.handler.OnReceive(connection, buf)
 		if err != nil {
 			logger.Errorf("netpoll server OnReceive ,err=$v \n", err)
+			return err
 		}
-		connection.Write(bytes)
+
+		// writing
+		//... make the write data ...
+		alloc, err := writer.Malloc(len(write_data))
+		copy(alloc, write_data) // write data
+		err=writer.Flush()
+		if err != nil {
+			logger.Errorf("netpoll server writing %s,err:%v \n", string(alloc),err)
+		}
 		return err
 	}
 	// todo is right
