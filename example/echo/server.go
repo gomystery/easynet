@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gomystery/easynet"
+	_interface "github.com/gomystery/easynet/interface"
 )
 
 type Handler struct {
@@ -27,14 +28,13 @@ func (h Handler) OnConnect(conn interface{}) error {
 
 }
 
-func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte, error) {
+func (h Handler) OnReceive(conn interface{}, stream _interface.IInputStream) ([]byte, error) {
 	//netpollConn, ok:= conn.(netpoll.Connection)
 	//if !ok {
 	//	fmt.Println("test conn err")
 	//}
-
+	bytes:= stream.Begin(nil)
 	fmt.Println("test receive msg ",string(bytes))
-
 	return bytes, nil
 
 }
