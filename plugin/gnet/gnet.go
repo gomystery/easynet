@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"github.com/baickl/logger"
+	"github.com/gomystery/easynet/base"
+	"strconv"
 	"time"
 
 	"github.com/gomystery/easynet/interface"
@@ -20,6 +22,8 @@ type GnetServer struct {
 	config *YamlConfig
 
 	handler _interface.IEasyNet
+	InputStreamMap map[string]_interface.IInputStream
+
 }
 
 func NewGnetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *GnetServer {
@@ -27,6 +31,7 @@ func NewGnetServer(ctx context.Context, config *YamlConfig, handler _interface.I
 		Ctx:     ctx,
 		handler: handler,
 		config:  config,
+		InputStreamMap: make(map[string]_interface.IInputStream),
 	}
 
 	server.addr = server.getAddr()
@@ -48,6 +53,8 @@ func (s *GnetServer) OnShutdown(eng gnet.Engine) {
 }
 
 func (s *GnetServer) OnOpen(c gnet.Conn) (out []byte, action gnet.Action) {
+	s.InputStreamMap[c.RemoteAddr().String() + strconv.Itoa(c.Fd())] = &base.InputStream{}
+
 	logger.Infoln("Gnet OnConnect")
 	s.handler.OnConnect(c)
 
@@ -55,6 +62,7 @@ func (s *GnetServer) OnOpen(c gnet.Conn) (out []byte, action gnet.Action) {
 }
 
 func (s *GnetServer) OnClose(c gnet.Conn, err error) (action gnet.Action) {
+	s.InputStreamMap[c.RemoteAddr().String() + strconv.Itoa(c.Fd())] = nil
 	logger.Infoln("Gnet OnClose")
 	s.handler.OnClose(c, err)
 
@@ -68,8 +76,10 @@ func (s *GnetServer) OnTick() (delay time.Duration, action gnet.Action) {
 
 func (s *GnetServer) OnTraffic(c gnet.Conn) gnet.Action {
 	logger.Infoln("Gnet OnReceive")
+	// -a all buffer
 	buf, _ := c.Next(-1)
-	out,err:=s.handler.OnReceive(c, buf)
+	s.InputStreamMap[c.RemoteAddr().String() + strconv.Itoa(c.Fd())].Begin(buf)
+	out,err:=s.handler.OnReceive(c, s.InputStreamMap[c.RemoteAddr().String() + strconv.Itoa(c.Fd())])
 	if err != nil {
 		return gnet.Close
 	}

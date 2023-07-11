@@ -3,6 +3,7 @@ package net
 import (
 	"context"
 	"fmt"
+	"github.com/gomystery/easynet/base"
 	"net"
 	"time"
 
@@ -17,6 +18,7 @@ type NetServer struct {
 	Address   string
 
 	handler _interface.IEasyNet
+	InputStreamMap map[string]_interface.IInputStream
 }
 
 func NewNetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetServer {
@@ -25,6 +27,8 @@ func NewNetServer(ctx context.Context, config *YamlConfig, handler _interface.IE
 		Network:   config.GetProtocol(),
 		Address:   fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
 		handler:   handler,
+		InputStreamMap: make(map[string]_interface.IInputStream),
+
 	}
 
 }
@@ -46,6 +50,7 @@ func (s *NetServer) Run() error {
 			// handle error
 			continue
 		}
+		s.InputStreamMap[conn.RemoteAddr().String()] = &base.InputStream{}
 		if err = s.handler.OnConnect(conn); err != nil {
 			// handle error
 			continue
@@ -59,10 +64,13 @@ func (s *NetServer) Run() error {
 
 func (s *NetServer) handleConnection(conn net.Conn) {
 	//函数调用完毕，自动关闭conn
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		conn.Close()
+		s.InputStreamMap[conn.RemoteAddr().String()] = nil
+	}(conn)
 
 	//4、获取客户端的网络地址信息
-	rbuf, wbuf := make([]byte, 256), []byte{}
+	rbuf, wbuf := make([]byte, 0xFFF), []byte{}
 
 	//5、获取用户数据
 	for {
@@ -76,12 +84,11 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 			time.Sleep(time.Second * 1)
 			continue
 		}
-
-		if wbuf, err = s.handler.OnReceive(conn, rbuf); err != nil {
+		s.InputStreamMap[conn.RemoteAddr().String()].Begin(rbuf[:rlen])
+		if wbuf, err = s.handler.OnReceive(conn, s.InputStreamMap[conn.RemoteAddr().String()]); err != nil {
 			logger.Errorf("net OnReceive err %v", err)
 			return
 		}
-
 		//6、给用户发送回去
 		if len(wbuf) > 0 {
 			conn.Write(wbuf)
