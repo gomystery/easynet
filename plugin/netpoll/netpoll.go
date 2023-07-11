@@ -72,7 +72,7 @@ func (s *NetPollServer) Run() error {
 		if err != nil {
 			logger.Errorf("netpoll server writing %s,err:%v \n", string(writeData),err)
 		}
-		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData),n)
+		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData),len(writeData))
 		return err
 	}
 	// todo is right
