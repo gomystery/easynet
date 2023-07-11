@@ -57,8 +57,8 @@ func (s *NetPollServer) Run() error {
 		s.InputStreamMap[connection.RemoteAddr().String()].Begin(buf)
 		reader.Release()
 		//... parse the read data ...
-		//var write_data []byte
-		write_data, err := s.handler.OnReceive(connection, s.InputStreamMap[connection.RemoteAddr().String()])
+		//var writeData []byte
+		writeData, err := s.handler.OnReceive(connection, s.InputStreamMap[connection.RemoteAddr().String()])
 		if err != nil {
 			logger.Errorf("netpoll server OnReceive ,err=$v \n", err)
 			return err
@@ -66,12 +66,13 @@ func (s *NetPollServer) Run() error {
 
 		// writing
 		//... make the write data ...
-		alloc, err := writer.Malloc(len(write_data))
-		copy(alloc, write_data) // write data
+		alloc, err := writer.Malloc(len(writeData))
+		copy(alloc, writeData) // write data
 		err=writer.Flush()
 		if err != nil {
-			logger.Errorf("netpoll server writing %s,err:%v \n", string(alloc),err)
+			logger.Errorf("netpoll server writing %s,err:%v \n", string(writeData),err)
 		}
+		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData),n)
 		return err
 	}
 	// todo is right

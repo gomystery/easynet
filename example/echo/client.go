@@ -34,9 +34,9 @@ func main() {
 
 	var readstr  = make([]byte,len(msg))
 	n,err=conn.Read(readstr)
-	fmt.Println("read msg",string(readstr),n,err)
+	fmt.Println("read msg:\n ",string(readstr),n,err)
 
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 60)
 
 
 
