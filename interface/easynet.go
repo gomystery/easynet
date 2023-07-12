@@ -5,7 +5,7 @@ type IEasyNet interface {
 
 	OnConnect(conn interface{}) error
 
-	OnReceive(conn interface{}, bytes []byte) ([]byte, error)
+	OnReceive(conn interface{}, ip IInputStream) ([]byte, error)
 
 	OnShutdown(conn interface{}) error
 

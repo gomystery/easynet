@@ -6,7 +6,6 @@ import (
 	"net"
 
 	"github.com/baickl/logger"
-	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
 	"github.com/gomystery/easynet/plugin/gev"
@@ -84,35 +83,35 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 	// todo new EasyNetPlugin
 	switch netName {
 	case "Gnet":
-		config := base.NewNetConfigWithConfig(path, netName)
+		config := NewNetConfigWithConfig(path, netName)
 		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			logger.Errorf("Gnet run err :%v", err)
 		}
 	case "Gev":
-		config := base.NewNetConfigWithConfig(path, netName)
+		config := NewNetConfigWithConfig(path, netName)
 		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			logger.Errorf("Gev run err :%v", err)
 		}
 	case "Net":
-		config := base.NewNetConfigWithConfig(path, netName)
+		config := NewNetConfigWithConfig(path, netName)
 		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			logger.Errorf("Net run err :%v", err)
 		}
 	case "NetPoll":
-		config := base.NewNetConfigWithConfig(path, netName)
+		config := NewNetConfigWithConfig(path, netName)
 		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			logger.Errorf("NetPoll run err :%v", err)
 		}
 	case "Evio":
-		config := base.NewNetConfigWithConfig(path, netName)
+		config := NewNetConfigWithConfig(path, netName)
 		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {

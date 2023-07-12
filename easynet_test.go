@@ -3,9 +3,8 @@ package easynet
 import (
 	"context"
 	"fmt"
+	_interface "github.com/gomystery/easynet/interface"
 	"testing"
-
-	"github.com/gomystery/easynet/base"
 )
 
 type Handler struct {
@@ -20,7 +19,7 @@ func (h Handler) OnConnect(conn interface{}) error {
 
 }
 
-func (h Handler) OnReceive(conn interface{}, bytes []byte) ([]byte, error) {
+func (h Handler) OnReceive(conn interface{}, stream _interface.IInputStream) ([]byte, error) {
 	return nil, nil
 
 }
@@ -34,7 +33,7 @@ func (h Handler) OnClose(conn interface{}, err error) error {
 }
 
 func TestEasyNet(t *testing.T) {
-	config := base.NewDefaultNetConfig("tcp", "127.0.0.1", 9011)
+	config := NewDefaultNetConfig("tcp", "127.0.0.1", 9011)
 	handler := &Handler{}
 	gmet := NewEasyNet(context.Background(), "NetPoll", config, handler)
 	fmt.Println(gmet)

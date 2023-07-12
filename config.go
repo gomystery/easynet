@@ -1,4 +1,4 @@
-package base
+package easynet
 
 import (
 	"io/ioutil"

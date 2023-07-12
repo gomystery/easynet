@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/baickl/logger"
+	"github.com/gomystery/easynet/base"
 	"github.com/gomystery/easynet/interface"
 	"github.com/tidwall/evio"
 )
@@ -17,6 +19,9 @@ type EvioServer struct {
 	addr   string
 
 	handler _interface.IEasyNet
+
+	InputStreamMap map[string]_interface.IInputStream
+
 }
 
 func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *EvioServer {
@@ -25,6 +30,7 @@ func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.I
 		Ctx:     ctx,
 		handler: handler,
 		config:  config,
+		InputStreamMap: make(map[string]_interface.IInputStream),
 	}
 	if s.config != nil {
 		s.addr = s.getAddr()
@@ -35,14 +41,6 @@ func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.I
 func (s EvioServer) Run() error {
 	var events evio.Events
 	events.NumLoops = int(s.config.GetLoops())
-	events.Opened = func(c evio.Conn) (out []byte, opts evio.Options, action evio.Action) {
-		logger.Infoln("evio Opened OnConnect")
-		err := s.handler.OnConnect(c)
-		if err != nil {
-			log.Printf("evio server OnConnect error %v", err)
-		}
-		return
-	}
 
 	events.Serving = func(srv evio.Server) (action evio.Action) {
 		logger.Infoln("evio server OnStart")
@@ -52,14 +50,27 @@ func (s EvioServer) Run() error {
 		}
 		return
 	}
+
+	events.Opened = func(c evio.Conn) (out []byte, opts evio.Options, action evio.Action) {
+		s.InputStreamMap[strconv.Itoa(c.AddrIndex())] = &base.InputStream{}
+		logger.Infoln("evio Opened OnConnect")
+		err := s.handler.OnConnect(c)
+		if err != nil {
+			log.Printf("evio server OnConnect error %v", err)
+		}
+		return
+	}
+
 	events.Data = func(c evio.Conn, in []byte) (out []byte, action evio.Action) {
-		out, err := s.handler.OnReceive(c, in)
+		s.InputStreamMap[strconv.Itoa(c.AddrIndex())].Begin(in)
+		out, err := s.handler.OnReceive(c, s.InputStreamMap[strconv.Itoa(c.AddrIndex())])
 		if err != nil {
 			logger.Errorf("evio server OnReceive err %v", err)
 		}
 		return
 	}
 	events.Closed = func(c evio.Conn, inErr error) (action evio.Action) {
+		s.InputStreamMap[strconv.Itoa(c.AddrIndex())] = nil
 		logger.Infoln("evio Opened OnClose")
 		err := s.handler.OnClose(c, inErr)
 		if err != nil {

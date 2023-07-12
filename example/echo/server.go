@@ -35,7 +35,7 @@ func (h Handler) OnReceive(conn interface{}, stream _interface.IInputStream) ([]
 	//}
 	bytes:= stream.Begin(nil)
 	fmt.Println("test receive msg ",string(bytes))
-	return bytes, nil
+	return []byte("1111111"), nil
 
 }
 

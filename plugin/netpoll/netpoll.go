@@ -3,6 +3,7 @@ package netpoll
 import (
 	"context"
 	"fmt"
+	"github.com/gomystery/easynet/base"
 
 	"github.com/baickl/logger"
 	"github.com/cloudwego/netpoll"
@@ -15,6 +16,8 @@ type NetPollServer struct {
 	config *YamlConfig
 
 	handler _interface.IEasyNet
+	InputStreamMap map[string]_interface.IInputStream
+
 }
 
 func NewNetPollServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetPollServer {
@@ -22,6 +25,7 @@ func NewNetPollServer(ctx context.Context, config *YamlConfig, handler _interfac
 		Ctx:     ctx,
 		config:  config,
 		handler: handler,
+		InputStreamMap: make(map[string]_interface.IInputStream),
 	}
 	return server
 
@@ -50,10 +54,11 @@ func (s *NetPollServer) Run() error {
 
 		// reading
 		buf, _ := reader.Next(reader.Len())
+		s.InputStreamMap[connection.RemoteAddr().String()].Begin(buf)
 		reader.Release()
 		//... parse the read data ...
-		//var write_data []byte
-		write_data, err := s.handler.OnReceive(connection, buf)
+		//var writeData []byte
+		writeData, err := s.handler.OnReceive(connection, s.InputStreamMap[connection.RemoteAddr().String()])
 		if err != nil {
 			logger.Errorf("netpoll server OnReceive ,err=$v \n", err)
 			return err
@@ -61,12 +66,13 @@ func (s *NetPollServer) Run() error {
 
 		// writing
 		//... make the write data ...
-		alloc, err := writer.Malloc(len(write_data))
-		copy(alloc, write_data) // write data
+		alloc, err := writer.Malloc(len(writeData))
+		copy(alloc, writeData) // write data
 		err=writer.Flush()
 		if err != nil {
-			logger.Errorf("netpoll server writing %s,err:%v \n", string(alloc),err)
+			logger.Errorf("netpoll server writing %s,err:%v \n", string(writeData),err)
 		}
+		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData),len(writeData))
 		return err
 	}
 	// todo is right
@@ -78,6 +84,11 @@ func (s *NetPollServer) Run() error {
 
 	//type OnConnect func(ctx context.Context, connection Connection) context.Context
 	connect := func(ctx context.Context, connection netpoll.Connection) context.Context {
+		s.InputStreamMap[connection.RemoteAddr().String()] = &base.InputStream{}
+		connection.AddCloseCallback(func(connection netpoll.Connection) error {
+			s.InputStreamMap[connection.RemoteAddr().String()] = nil
+			return nil
+		})
 		logger.Infoln("netpoll server OnConnect")
 		err := s.handler.OnConnect(connection)
 		if err != nil {
@@ -90,7 +101,6 @@ func (s *NetPollServer) Run() error {
 		handle,
 		netpoll.WithOnPrepare(prepare),
 		netpoll.WithOnConnect(connect),
-		//netpoll.WithReadTimeout(time.Second),
 	)
 
 	// start listen loop ...
