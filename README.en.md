@@ -1,4 +1,4 @@
-#Easynet
+# Easynet
 ## Introduction
 Given the existence of various Go network libraries on the market, each with its own advantages and disadvantages, when we use network libraries to implement application layer protocols, we often have to choose one of them for access. If there is a change in business, the cost of switching networks is relatively high. Here, a layer of encapsulation has been applied to commonly used network libraries on the market, revealing a unified interface, and a brand new network library - **easynet** has been constructed. Users using **easynet** can choose different network libraries through yaml configuration, making the cost of switching network libraries almost zero.
 
