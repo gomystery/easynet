@@ -33,8 +33,8 @@ func (h Handler) OnReceive(conn interface{}, stream _interface.IInputStream) ([]
 	//if !ok {
 	//	fmt.Println("test conn err")
 	//}
-	bytes:= stream.Begin(nil)
-	fmt.Println("test receive msg ",string(bytes))
+	bytes := stream.Begin(nil)
+	fmt.Println("test receive msg ", string(bytes))
 	return []byte("1111111"), nil
 
 }
@@ -54,6 +54,5 @@ func main() {
 	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Net", handler, "../../base/confg.yaml")
 	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Gev", handler, "../../base/confg.yaml")
 	//easynet.NewEasyNetWithYamlConfig(context.Background(), "Gnet", handler, "../../base/confg.yaml")
-
 
 }

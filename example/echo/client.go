@@ -27,19 +27,15 @@ func main() {
 	msg := "hello easy net "
 
 	fmt.Println(0, "connect ok! sending file...")
-	n,err:=conn.Write([]byte(msg))
-	fmt.Println("Write msg",string(msg),n,err)
+	n, err := conn.Write([]byte(msg))
+	fmt.Println("Write msg", string(msg), n, err)
 
 	time.Sleep(time.Second * 2)
 
-	var readstr  = make([]byte,len(msg))
-	n,err=conn.Read(readstr)
-	fmt.Println("read msg:\n ",string(readstr),n,err)
+	var readstr = make([]byte, len(msg))
+	n, err = conn.Read(readstr)
+	fmt.Println("read msg:\n ", string(readstr), n, err)
 
 	time.Sleep(time.Second * 60)
-
-
-
-
 
 }

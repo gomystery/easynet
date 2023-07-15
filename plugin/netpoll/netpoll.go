@@ -15,17 +15,18 @@ type NetPollServer struct {
 
 	config *YamlConfig
 
-	handler _interface.IEasyNet
+	handler        _interface.IEasyNet
 	InputStreamMap map[string]_interface.IInputStream
-
+	ConnectionMap  map[string]_interface.IConnection
 }
 
 func NewNetPollServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetPollServer {
 	server := &NetPollServer{
-		Ctx:     ctx,
-		config:  config,
-		handler: handler,
+		Ctx:            ctx,
+		config:         config,
+		handler:        handler,
 		InputStreamMap: make(map[string]_interface.IInputStream),
+		ConnectionMap:  make(map[string]_interface.IConnection),
 	}
 	return server
 
@@ -58,7 +59,7 @@ func (s *NetPollServer) Run() error {
 		reader.Release()
 		//... parse the read data ...
 		//var writeData []byte
-		writeData, err := s.handler.OnReceive(connection, s.InputStreamMap[connection.RemoteAddr().String()])
+		writeData, err := s.handler.OnReceive(s.ConnectionMap[connection.RemoteAddr().String()], s.InputStreamMap[connection.RemoteAddr().String()])
 		if err != nil {
 			logger.Errorf("netpoll server OnReceive ,err=$v \n", err)
 			return err
@@ -68,29 +69,32 @@ func (s *NetPollServer) Run() error {
 		//... make the write data ...
 		alloc, err := writer.Malloc(len(writeData))
 		copy(alloc, writeData) // write data
-		err=writer.Flush()
+		err = writer.Flush()
 		if err != nil {
-			logger.Errorf("netpoll server writing %s,err:%v \n", string(writeData),err)
+			logger.Errorf("netpoll server writing %s,err:%v \n", string(writeData), err)
 		}
-		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData),len(writeData))
+		logger.Infof("netpoll server WriteBinary %s,n:%v \n", string(writeData), len(writeData))
 		return err
 	}
 	// todo is right
-	prepare := func(connection netpoll.Connection) context.Context {
-		logger.Infoln("netpoll server OnStart")
-		s.handler.OnStart(connection)
-		return s.Ctx
-	}
+	//prepare := func(connection netpoll.Connection) context.Context {
+	//	logger.Infoln("netpoll server OnStart")
+	//	s.handler.OnStart(connection)
+	//	return s.Ctx
+	//}
 
 	//type OnConnect func(ctx context.Context, connection Connection) context.Context
 	connect := func(ctx context.Context, connection netpoll.Connection) context.Context {
 		s.InputStreamMap[connection.RemoteAddr().String()] = &base.InputStream{}
+		s.ConnectionMap[connection.RemoteAddr().String()] = &Connection{
+			Conn: connection,
+		}
 		connection.AddCloseCallback(func(connection netpoll.Connection) error {
 			s.InputStreamMap[connection.RemoteAddr().String()] = nil
 			return nil
 		})
 		logger.Infoln("netpoll server OnConnect")
-		err := s.handler.OnConnect(connection)
+		err := s.handler.OnConnect(s.ConnectionMap[connection.RemoteAddr().String()])
 		if err != nil {
 			logger.Errorf("netpoll server OnConnect ,err=$v \n", err)
 		}
@@ -99,7 +103,7 @@ func (s *NetPollServer) Run() error {
 
 	eventLoop, _ = netpoll.NewEventLoop(
 		handle,
-		netpoll.WithOnPrepare(prepare),
+		//netpoll.WithOnPrepare(prepare),
 		netpoll.WithOnConnect(connect),
 	)
 

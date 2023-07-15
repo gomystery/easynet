@@ -14,21 +14,22 @@ import (
 type NetServer struct {
 	Ctx context.Context
 
-	Network   string
-	Address   string
+	Network string
+	Address string
 
-	handler _interface.IEasyNet
+	handler        _interface.IEasyNet
 	InputStreamMap map[string]_interface.IInputStream
+	ConnectionMap  map[string]_interface.IConnection
 }
 
 func NewNetServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *NetServer {
 	return &NetServer{
-		Ctx:       ctx,
-		Network:   config.GetProtocol(),
-		Address:   fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
-		handler:   handler,
+		Ctx:            ctx,
+		Network:        config.GetProtocol(),
+		Address:        fmt.Sprintf("%s:%d", config.GetIp(), config.GetPort()),
+		handler:        handler,
 		InputStreamMap: make(map[string]_interface.IInputStream),
-
+		ConnectionMap:  make(map[string]_interface.IConnection),
 	}
 
 }
@@ -51,7 +52,10 @@ func (s *NetServer) Run() error {
 			continue
 		}
 		s.InputStreamMap[conn.RemoteAddr().String()] = &base.InputStream{}
-		if err = s.handler.OnConnect(conn); err != nil {
+		s.ConnectionMap[conn.RemoteAddr().String()] = &Connection{
+			Conn: conn,
+		}
+		if err = s.handler.OnConnect(s.ConnectionMap[conn.RemoteAddr().String()]); err != nil {
 			// handle error
 			continue
 		}
@@ -67,6 +71,7 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 	defer func(conn net.Conn) {
 		conn.Close()
 		s.InputStreamMap[conn.RemoteAddr().String()] = nil
+		s.handler.OnClose(s.ConnectionMap[conn.RemoteAddr().String()], nil)
 	}(conn)
 
 	//4、获取客户端的网络地址信息
@@ -79,13 +84,13 @@ func (s *NetServer) handleConnection(conn net.Conn) {
 			logger.Errorf("net read message err %v", err)
 			return
 		}
-		if rlen <= 0{
+		if rlen <= 0 {
 			//logger.Infoln("rlen err %v", rlen)
 			time.Sleep(time.Second * 1)
 			continue
 		}
 		s.InputStreamMap[conn.RemoteAddr().String()].Begin(rbuf[:rlen])
-		if wbuf, err = s.handler.OnReceive(conn, s.InputStreamMap[conn.RemoteAddr().String()]); err != nil {
+		if wbuf, err = s.handler.OnReceive(s.ConnectionMap[conn.RemoteAddr().String()], s.InputStreamMap[conn.RemoteAddr().String()]); err != nil {
 			logger.Errorf("net OnReceive err %v", err)
 			return
 		}

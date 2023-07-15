@@ -28,18 +28,16 @@ func main() {
 	fmt.Println(0, "connect ok! sending file...")
 
 	for i := 0; i < 1000; i++ {
-		msg :=fmt.Sprintf("hello easy net NO: %d ",i)
-		n,err:=conn.Write(pack(msg))
-		fmt.Println("Write msg",string(msg),n,err)
+		msg := fmt.Sprintf("hello easy net NO: %d ", i)
+		n, err := conn.Write(pack(msg))
+		fmt.Println("Write msg", string(msg), n, err)
 	}
-
-
 
 	time.Sleep(time.Second * 2)
 
-	var readstr  = make([]byte,100000)
-	n,err:=conn.Read(readstr)
-	fmt.Println("read msg:\n ",string(readstr),n,err)
+	var readstr = make([]byte, 100000)
+	n, err := conn.Read(readstr)
+	fmt.Println("read msg:\n ", string(readstr), n, err)
 
 	time.Sleep(time.Second * 60)
 
@@ -53,14 +51,11 @@ func IntToBytes(n int) []byte {
 	return bytebuf.Bytes()
 }
 
-
-
-
 func pack(msg string) []byte {
 	var msgBytes = []byte{}
 	mlen := len(msg)
 	mlenBytes := IntToBytes(mlen)
-	msgBytes = append(msgBytes,mlenBytes... )
-	msgBytes = append(msgBytes,[]byte(msg)... )
+	msgBytes = append(msgBytes, mlenBytes...)
+	msgBytes = append(msgBytes, []byte(msg)...)
 	return msgBytes
 }
