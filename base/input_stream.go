@@ -2,7 +2,7 @@ package base
 
 // InputStream is a helper type for managing input streams from inside
 // the Data event.
-type InputStream struct{
+type InputStream struct {
 	b []byte
 }
 
@@ -21,7 +21,7 @@ func (is *InputStream) Begin(packet []byte) (data []byte) {
 func (is *InputStream) End(data []byte) {
 	if len(data) > 0 {
 		//if len(data) != len(is.b) {
-			is.b = append(is.b[:0], data...)
+		is.b = append(is.b[:0], data...)
 		//}
 	} else if len(is.b) > 0 {
 		is.b = is.b[:0]

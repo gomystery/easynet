@@ -21,16 +21,17 @@ type EvioServer struct {
 	handler _interface.IEasyNet
 
 	InputStreamMap map[string]_interface.IInputStream
-
+	ConnectioonMap map[string]_interface.IConnection
 }
 
 func NewEvioServer(ctx context.Context, config *YamlConfig, handler _interface.IEasyNet) *EvioServer {
 
 	s := &EvioServer{
-		Ctx:     ctx,
-		handler: handler,
-		config:  config,
+		Ctx:            ctx,
+		handler:        handler,
+		config:         config,
 		InputStreamMap: make(map[string]_interface.IInputStream),
+		ConnectioonMap: make(map[string]_interface.IConnection),
 	}
 	if s.config != nil {
 		s.addr = s.getAddr()
@@ -53,8 +54,11 @@ func (s EvioServer) Run() error {
 
 	events.Opened = func(c evio.Conn) (out []byte, opts evio.Options, action evio.Action) {
 		s.InputStreamMap[strconv.Itoa(c.AddrIndex())] = &base.InputStream{}
+		s.ConnectioonMap[strconv.Itoa(c.AddrIndex())] = &Connection{
+			Conn: c,
+		}
 		logger.Infoln("evio Opened OnConnect")
-		err := s.handler.OnConnect(c)
+		err := s.handler.OnConnect(s.ConnectioonMap[strconv.Itoa(c.AddrIndex())])
 		if err != nil {
 			log.Printf("evio server OnConnect error %v", err)
 		}
@@ -63,7 +67,7 @@ func (s EvioServer) Run() error {
 
 	events.Data = func(c evio.Conn, in []byte) (out []byte, action evio.Action) {
 		s.InputStreamMap[strconv.Itoa(c.AddrIndex())].Begin(in)
-		out, err := s.handler.OnReceive(c, s.InputStreamMap[strconv.Itoa(c.AddrIndex())])
+		out, err := s.handler.OnReceive(s.ConnectioonMap[strconv.Itoa(c.AddrIndex())], s.InputStreamMap[strconv.Itoa(c.AddrIndex())])
 		if err != nil {
 			logger.Errorf("evio server OnReceive err %v", err)
 		}
@@ -72,7 +76,7 @@ func (s EvioServer) Run() error {
 	events.Closed = func(c evio.Conn, inErr error) (action evio.Action) {
 		s.InputStreamMap[strconv.Itoa(c.AddrIndex())] = nil
 		logger.Infoln("evio Opened OnClose")
-		err := s.handler.OnClose(c, inErr)
+		err := s.handler.OnClose(s.ConnectioonMap[strconv.Itoa(c.AddrIndex())], inErr)
 		if err != nil {
 			logger.Errorf("evio server OnClose error %v", err)
 		}

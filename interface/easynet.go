@@ -1,15 +1,15 @@
 package _interface
 
 type IEasyNet interface {
-	OnStart(conn interface{}) error
+	OnStart(conn IConnection) error
 
-	OnConnect(conn interface{}) error
+	OnConnect(conn IConnection) error
 
-	OnReceive(conn interface{}, ip IInputStream) ([]byte, error)
+	OnReceive(conn IConnection, ip IInputStream) ([]byte, error)
 
-	OnShutdown(conn interface{}) error
+	OnShutdown(conn IConnection) error
 
-	OnClose(conn interface{}, err error) error
+	OnClose(conn IConnection, err error) error
 
 	// todo to add more
 }

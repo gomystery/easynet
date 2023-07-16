@@ -27,12 +27,14 @@ type EasyNet struct {
 
 	EasyNetPlugin _interface.IPlugin
 
+	Config _interface.IConfig
 }
 
 func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, handler _interface.IEasyNet) *EasyNet {
 	easynet := &EasyNet{
 		Ctx:     ctx,
 		handler: handler,
+		Config:  config,
 	}
 
 	// todo new EasyNetPlugin
@@ -84,6 +86,7 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 	switch netName {
 	case "Gnet":
 		config := NewNetConfigWithConfig(path, netName)
+		easynet.Config = config
 		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
@@ -91,6 +94,7 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 		}
 	case "Gev":
 		config := NewNetConfigWithConfig(path, netName)
+		easynet.Config = config
 		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
@@ -98,6 +102,7 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 		}
 	case "Net":
 		config := NewNetConfigWithConfig(path, netName)
+		easynet.Config = config
 		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
@@ -105,6 +110,7 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 		}
 	case "NetPoll":
 		config := NewNetConfigWithConfig(path, netName)
+		easynet.Config = config
 		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
@@ -112,6 +118,7 @@ func NewEasyNetWithYamlConfig(ctx context.Context, netName string, handler _inte
 		}
 	case "Evio":
 		config := NewNetConfigWithConfig(path, netName)
+		easynet.Config = config
 		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, config, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
