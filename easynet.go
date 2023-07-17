@@ -3,8 +3,6 @@ package easynet
 import (
 	"context"
 	"fmt"
-	"net"
-
 	"github.com/baickl/logger"
 	"github.com/gomystery/easynet/interface"
 	"github.com/gomystery/easynet/plugin/evio"
@@ -12,6 +10,7 @@ import (
 	"github.com/gomystery/easynet/plugin/gnet"
 	np "github.com/gomystery/easynet/plugin/net"
 	"github.com/gomystery/easynet/plugin/netpoll"
+	"net"
 )
 
 func init() {
@@ -37,34 +36,40 @@ func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, 
 		Config:  config,
 	}
 
+	var configImpl _interface.IConfig = config
+	if defaultConfigImpl, ok := config.(*DeFaultNetConfig); ok {
+		configImpl = defaultConfigImpl
+	}
+
 	// todo new EasyNetPlugin
 	switch netName {
 	case "Gnet":
-		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, config, handler)
+		//configImpl :=  (*gnet.YamlConfig)(unsafe.Pointer(config))
+		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Gev":
-		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, config, handler)
+		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Net":
-		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, config, handler)
+		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "NetPoll":
-		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, config, handler)
+		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Evio":
-		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, config, handler)
+		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
