@@ -11,6 +11,7 @@ import (
 	np "github.com/gomystery/easynet/plugin/net"
 	"github.com/gomystery/easynet/plugin/netpoll"
 	"net"
+	"unsafe"
 )
 
 func init() {
@@ -37,38 +38,54 @@ func NewEasyNet(ctx context.Context, netName string, config _interface.IConfig, 
 	}
 
 	var configImpl _interface.IConfig = config
-	if defaultConfigImpl, ok := config.(*DeFaultNetConfig); ok {
-		configImpl = defaultConfigImpl
+
+	var defaultConfigImpl *DeFaultNetConfig
+	if dc, ok := config.(*DeFaultNetConfig); ok {
+		defaultConfigImpl = dc
 	}
 
 	// todo new EasyNetPlugin
 	switch netName {
 	case "Gnet":
-		//configImpl :=  (*gnet.YamlConfig)(unsafe.Pointer(config))
+		if defaultConfigImpl != nil {
+			configImpl = (*gnet.YamlConfig)(unsafe.Pointer(defaultConfigImpl))
+		}
 		easynet.EasyNetPlugin = gnet.NewGnetEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Gev":
+		if defaultConfigImpl != nil {
+			configImpl = (*gev.YamlConfig)(unsafe.Pointer(defaultConfigImpl))
+		}
 		easynet.EasyNetPlugin = gev.NewGevEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Net":
+		if defaultConfigImpl != nil {
+			configImpl = (*np.YamlConfig)(unsafe.Pointer(defaultConfigImpl))
+		}
 		easynet.EasyNetPlugin = np.NewNetEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "NetPoll":
+		if defaultConfigImpl != nil {
+			configImpl = (*netpoll.YamlConfig)(unsafe.Pointer(defaultConfigImpl))
+		}
 		easynet.EasyNetPlugin = netpoll.NewNetPollEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
 			fmt.Println(err)
 		}
 	case "Evio":
+		if defaultConfigImpl != nil {
+			configImpl = (*evio.YamlConfig)(unsafe.Pointer(defaultConfigImpl))
+		}
 		easynet.EasyNetPlugin = evio.NewEvioEasyNetPlugin(ctx, configImpl, handler)
 		err := easynet.EasyNetPlugin.Run()
 		if err != nil {
